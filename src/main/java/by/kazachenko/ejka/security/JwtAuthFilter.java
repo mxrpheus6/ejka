@@ -1,6 +1,5 @@
 package by.kazachenko.ejka.security;
 
-import by.kazachenko.ejka.service.CustomUserDetailsService;
 import io.jsonwebtoken.Claims;
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
@@ -13,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -22,7 +22,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final CustomUserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(
@@ -39,20 +38,20 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         String token = authHeader.substring(7);
-        String username = jwtService.extractUsername(token);
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null
-                && jwtService.isTokenValid(token)) {
-
-            var userDetails = userDetailsService.loadUserByUsername(username);
+        if (SecurityContextHolder.getContext().getAuthentication() == null &&
+                jwtService.isTokenValid(token)) {
 
             Claims claims = jwtService.extractAllClaims(token);
+            String username = claims.getSubject();
             String role = claims.get("role", String.class);
 
             SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role);
 
+            User principal = new User(username, "", List.of(authority));
+
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                    userDetails,
+                    principal,
                     null,
                     List.of(authority)
             );
