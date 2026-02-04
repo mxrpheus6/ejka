@@ -1,6 +1,6 @@
-package by.kazachenko.ejka.model;
+package by.kazachenko.ejka.user.model;
 
-import by.kazachenko.ejka.model.enums.Role;
+import by.kazachenko.ejka.user.model.enums.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

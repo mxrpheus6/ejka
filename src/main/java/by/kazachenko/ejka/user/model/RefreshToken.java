@@ -1,4 +1,4 @@
-package by.kazachenko.ejka.model;
+package by.kazachenko.ejka.user.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,3 +1,5 @@
 spring:
   application:
     name: ejka
+  config:
+    import: optional:file:.env[.properties]

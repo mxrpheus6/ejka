@@ -1,11 +1,11 @@
-package by.kazachenko.ejka.dto;
+package by.kazachenko.ejka.user.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class LoginRequest {
+public class RegisterRequest {
     private String email;
     private String password;
 }

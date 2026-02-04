@@ -1,4 +1,4 @@
-package by.kazachenko.ejka.security;
+package by.kazachenko.ejka.common.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -26,7 +26,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         auth -> auth.requestMatchers("/api/v1/auth/**").permitAll()
-                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/moder/**").hasRole("MODERATOR")
                                 .requestMatchers("/user/**").hasRole("USER")
                                 .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception

@@ -1,4 +1,4 @@
-package by.kazachenko.ejka.dto;
+package by.kazachenko.ejka.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,6 +1,6 @@
-package by.kazachenko.ejka.repository;
+package by.kazachenko.ejka.user.repository;
 
-import by.kazachenko.ejka.model.RefreshToken;
+import by.kazachenko.ejka.user.model.RefreshToken;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;

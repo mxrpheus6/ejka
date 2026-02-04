@@ -1,13 +1,15 @@
-package by.kazachenko.ejka.service;
+package by.kazachenko.ejka.user.service.impl;
 
-import by.kazachenko.ejka.dto.LoginRequest;
-import by.kazachenko.ejka.dto.LoginResponse;
-import by.kazachenko.ejka.dto.RegisterRequest;
-import by.kazachenko.ejka.dto.RegisterResponse;
-import by.kazachenko.ejka.model.User;
-import by.kazachenko.ejka.model.enums.Role;
-import by.kazachenko.ejka.repository.UserRepository;
-import by.kazachenko.ejka.security.JwtService;
+import by.kazachenko.ejka.common.security.CustomUserDetails;
+import by.kazachenko.ejka.user.dto.LoginRequest;
+import by.kazachenko.ejka.user.dto.LoginResponse;
+import by.kazachenko.ejka.user.dto.RegisterRequest;
+import by.kazachenko.ejka.user.dto.RegisterResponse;
+import by.kazachenko.ejka.user.model.User;
+import by.kazachenko.ejka.user.model.enums.Role;
+import by.kazachenko.ejka.user.repository.UserRepository;
+import by.kazachenko.ejka.user.service.AuthService;
+import by.kazachenko.ejka.user.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -44,11 +46,15 @@ public class AuthService {
 
     public LoginResponse login(LoginRequest request) {
 
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+        );
 
-        String accessToken = jwtService.generateAccessToken(request.getEmail());
-        String refreshToken = jwtService.generateAccessToken(request.getEmail());
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user = customUserDetails.getUser();
+
+        String accessToken = jwtService.generateAccessToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
 
         return new LoginResponse(accessToken, refreshToken);
     }

@@ -1,10 +1,8 @@
-package by.kazachenko.ejka.service;
+package by.kazachenko.ejka.common.security;
 
-import by.kazachenko.ejka.model.User;
-import by.kazachenko.ejka.repository.UserRepository;
-import java.util.List;
+import by.kazachenko.ejka.user.model.User;
+import by.kazachenko.ejka.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CustomUserDetailsService implements UserDetailsService {
+public class CustomUserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -21,7 +19,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
-                List.of(new SimpleGrantedAuthority(user.getRole().name())));
+        return new CustomUserDetails(user);
     }
 }

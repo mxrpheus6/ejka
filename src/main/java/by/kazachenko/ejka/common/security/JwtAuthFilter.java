@@ -1,5 +1,6 @@
-package by.kazachenko.ejka.security;
+package by.kazachenko.ejka.common.security;
 
+import by.kazachenko.ejka.user.service.JwtService;
 import io.jsonwebtoken.Claims;
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;

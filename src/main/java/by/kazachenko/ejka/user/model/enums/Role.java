@@ -1,4 +1,4 @@
-package by.kazachenko.ejka.model.enums;
+package by.kazachenko.ejka.user.model.enums;
 
 public enum Role {
     ROLE_USER,

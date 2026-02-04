@@ -15,6 +15,6 @@ WORKDIR /app
 
 COPY --from=builder /app/target/ejka-1.0.0.jar app.jar
 
-EXPOSE 4003
+EXPOSE 6000
 
 ENTRYPOINT ["java", "-jar", "app.jar", "--spring.profiles.active=prod"]

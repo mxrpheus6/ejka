@@ -1,4 +1,4 @@
-package by.kazachenko.ejka.config;
+package by.kazachenko.ejka.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
