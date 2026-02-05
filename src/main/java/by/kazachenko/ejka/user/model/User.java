@@ -28,7 +28,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
@@ -36,4 +36,13 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Builder.Default
+    @Column(nullable = false)
+    private Integer tokenVersion = 0;
+
+    @Builder.Default
+    @Column(nullable = false)
+    private Boolean isBanned = false;
+
 }

@@ -1,0 +1,11 @@
+package by.kazachenko.ejka.user.dto.request;
+
+import jakarta.validation.constraints.NotBlank;
+
+public record RefreshTokenRequest(
+
+        @NotBlank(message = "{refresh_token_request.email.blank}")
+        String refreshToken
+
+) {
+}
