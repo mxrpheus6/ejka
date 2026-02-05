@@ -1,10 +1,10 @@
 package by.kazachenko.ejka.user.service.impl;
 
+import by.kazachenko.ejka.common.exception.cutom.UserAlreadyExistsException;
 import by.kazachenko.ejka.common.security.CustomUserDetails;
-import by.kazachenko.ejka.user.dto.LoginRequest;
-import by.kazachenko.ejka.user.dto.LoginResponse;
-import by.kazachenko.ejka.user.dto.RegisterRequest;
-import by.kazachenko.ejka.user.dto.RegisterResponse;
+import by.kazachenko.ejka.user.dto.response.AuthResponse;
+import by.kazachenko.ejka.user.dto.request.LoginRequest;
+import by.kazachenko.ejka.user.dto.request.RegisterRequest;
 import by.kazachenko.ejka.user.model.User;
 import by.kazachenko.ejka.user.model.enums.Role;
 import by.kazachenko.ejka.user.repository.UserRepository;
@@ -27,27 +27,31 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
-    public RegisterResponse register(RegisterRequest request) {
+    public AuthResponse register(RegisterRequest request) {
 
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already registered");
+        if (userRepository.existsByEmail(request.email())) {
+            throw new UserAlreadyExistsException("Пользователь с таким email уже существует");
         }
 
         User user = User.builder()
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
+                .email(request.email())
+                .password(passwordEncoder.encode(request.password()))
                 .role(Role.ROLE_USER)
                 .build();
 
         userRepository.save(user);
 
-        return new RegisterResponse("User registered successfully");
+
+        String accessToken = jwtService.generateAccessToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
+
+        return new AuthResponse(accessToken, refreshToken);
     }
 
-    public LoginResponse login(LoginRequest request) {
+    public AuthResponse login(LoginRequest request) {
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+                new UsernamePasswordAuthenticationToken(request.email(), request.password())
         );
 
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -56,7 +60,7 @@ public class AuthServiceImpl implements AuthService {
         String accessToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
 
-        return new LoginResponse(accessToken, refreshToken);
+        return new AuthResponse(accessToken, refreshToken);
     }
 
 }

@@ -1,13 +1,12 @@
 package by.kazachenko.ejka.user.service;
 
-import by.kazachenko.ejka.user.dto.LoginRequest;
-import by.kazachenko.ejka.user.dto.LoginResponse;
-import by.kazachenko.ejka.user.dto.RegisterRequest;
-import by.kazachenko.ejka.user.dto.RegisterResponse;
+import by.kazachenko.ejka.user.dto.response.AuthResponse;
+import by.kazachenko.ejka.user.dto.request.LoginRequest;
+import by.kazachenko.ejka.user.dto.request.RegisterRequest;
 
 public interface AuthService {
 
-    RegisterResponse register(RegisterRequest request);
-    LoginResponse login(LoginRequest request);
+    AuthResponse register(RegisterRequest request);
+    AuthResponse login(LoginRequest request);
 
 }
