@@ -1,11 +1,10 @@
 package by.kazachenko.ejka.user.controller;
 
-import by.kazachenko.ejka.common.security.CustomUserDetails;
 import by.kazachenko.ejka.user.dto.request.RefreshTokenRequest;
 import by.kazachenko.ejka.user.dto.response.AuthResponse;
 import by.kazachenko.ejka.user.dto.request.LoginRequest;
 import by.kazachenko.ejka.user.dto.request.RegisterRequest;
-import by.kazachenko.ejka.user.service.impl.AuthServiceImpl;
+import by.kazachenko.ejka.user.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthServiceImpl authService;
+    private final AuthService authService;
 
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@RequestBody @Valid RegisterRequest request) {
