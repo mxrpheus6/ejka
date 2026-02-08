@@ -1,7 +1,5 @@
 package by.kazachenko.ejka.common.security;
 
-import by.kazachenko.ejka.common.exception.ExceptionDto;
-import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +11,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import tools.jackson.databind.ObjectMapper;
 
 @Configuration
 @RequiredArgsConstructor
@@ -21,7 +18,6 @@ import tools.jackson.databind.ObjectMapper;
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
-    private final ObjectMapper objectMapper;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {

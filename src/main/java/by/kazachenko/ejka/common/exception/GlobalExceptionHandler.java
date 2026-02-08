@@ -1,5 +1,7 @@
 package by.kazachenko.ejka.common.exception;
 
+import by.kazachenko.ejka.common.dto.exception.ExceptionDto;
+import by.kazachenko.ejka.common.dto.exception.Validation;
 import by.kazachenko.ejka.common.exception.cutom.UserAlreadyExistsException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -7,7 +9,6 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import java.time.LocalDateTime;
 import java.util.List;
-import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -39,8 +40,15 @@ public class GlobalExceptionHandler {
                 .body(new ExceptionDto(LocalDateTime.now(), FIELD_VALIDATION_FAILED, validations));
     }
 
-    @ExceptionHandler({UsernameNotFoundException.class, BadCredentialsException.class})
+    @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<?> handleUsernameNotFoundException(UsernameNotFoundException e) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .build();
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<?> handleBadCredentialsException(BadCredentialsException e) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .build();

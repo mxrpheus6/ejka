@@ -37,9 +37,14 @@ public class AuthServiceImpl implements AuthService {
             throw new UserAlreadyExistsException("Пользователь с таким email уже существует");
         }
 
+        if (userRepository.existsByUsername(request.username())) {
+            throw new UserAlreadyExistsException("Пользователь с таким именем уже существует");
+        }
+
         User user = User.builder()
                 .email(request.email())
                 .password(passwordEncoder.encode(request.password()))
+                .username(request.username())
                 .role(Role.ROLE_USER)
                 .build();
 

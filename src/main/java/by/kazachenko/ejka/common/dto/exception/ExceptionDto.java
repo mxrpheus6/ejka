@@ -1,4 +1,4 @@
-package by.kazachenko.ejka.common.exception;
+package by.kazachenko.ejka.common.dto.exception;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
