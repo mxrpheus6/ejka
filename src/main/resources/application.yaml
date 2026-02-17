@@ -6,24 +6,29 @@ spring:
   application:
     name: ejka
 
+  servlet:
+    multipart:
+      max-file-size: ${SERVLET_MULTIPART_MAX_FILE_SIZE}
+      max-request-size: ${SERVLET_MULTIPART_MAX_REQUEST_SIZE}
+
   datasource:
     url: ${POSTGRES_DB_URL}
     username: ${POSTGRES_DB_USER}
     password: ${POSTGRES_DB_PASSWORD}
     driver-class-name: ${POSTGRES_DB_DRIVER}
 
-    jpa:
-      properties:
-        hibernate:
-          dialect: ${HIBERNATE_DIALECT}
+  jpa:
+    properties:
       hibernate:
-        ddl-auto: ${HIBERNATE_DDL_AUTO}
-      show-sql: true
+        dialect: ${HIBERNATE_DIALECT}
+    hibernate:
+      ddl-auto: ${HIBERNATE_DDL_AUTO}
+    show-sql: true
 
-    data:
-      redis:
-        host: ${REDIS_HOST}
-        port: ${REDIS_PORT}
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
 
 jwt:
   secret: ${JWT_SECRET}
@@ -36,3 +41,5 @@ minio:
   enpoint: ${MINIO_ENDPOINT}
   access-key: ${MINIO_ROOT_USER}
   secret-key: ${MINIO_ROOT_PASSWORD}
+  buckets:
+    products: ${MINIO_PRODUCTS_BUCKET_NAME}

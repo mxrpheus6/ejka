@@ -97,7 +97,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionDto> handleException(Exception e) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ExceptionDto(LocalDateTime.now(), e.getClass().toString(), null));
+                .body(new ExceptionDto(LocalDateTime.now(), e.getMessage(), null));
     }
 
 }

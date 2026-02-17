@@ -1,5 +1,6 @@
 package by.kazachenko.ejka.user.controller;
 
+import by.kazachenko.ejka.product.service.ProductImageService;
 import io.minio.BucketExistsArgs;
 import io.minio.GetPresignedObjectUrlArgs;
 import io.minio.MakeBucketArgs;
@@ -12,10 +13,15 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 // TODO: delete this ^^
 @RestController
@@ -23,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class TestController {
 
-    private final MinioClient minioClient;
+    private final ProductImageService productImageService;
 
     @PreAuthorize("hasRole('MODERATOR')")
     @GetMapping("/moder/dashboard")
@@ -32,41 +38,8 @@ public class TestController {
     }
 
     @PreAuthorize("hasAnyRole('USER','MODERATOR')")
-    @GetMapping("/user/profile")
+    @PostMapping("/user/profile")
     public String userProfile() {
-        try {
-            boolean found =
-                    minioClient.bucketExists(BucketExistsArgs.builder().bucket("asiatrip").build());
-            if (!found) {
-                minioClient.makeBucket(MakeBucketArgs.builder().bucket("asiatrip").build());
-            } else {
-                System.out.println("Bucket 'asiatrip' already exists.");
-            }
-
-
-            minioClient.uploadObject(
-                    UploadObjectArgs.builder()
-                            .bucket("asiatrip")
-                            .object("1.png")
-                            .filename("D:\\ejka\\1.png")
-                            .build());
-            System.out.println("Success");
-        } catch (MinioException | InvalidKeyException | IOException | NoSuchAlgorithmException e) {
-            System.out.println("Error occurred: " + e);
-        }
-        try {
-            String url = minioClient.getPresignedObjectUrl(
-                    GetPresignedObjectUrlArgs.builder()
-                            .method(Method.GET)
-                            .bucket("asiatrip")
-                            .object("1.png")
-                            .expiry(1, TimeUnit.HOURS)
-                            .build());
-
-            System.out.println("Ссылка на скачивание: " + url);
-            return url;
-        } catch (Exception e) {
-            throw new RuntimeException("Ошибка получения ссылки", e);
-        }
+        return "Admin only";
     }
 }

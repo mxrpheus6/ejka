@@ -13,7 +13,7 @@ import org.springframework.data.domain.Pageable;
 )
 public interface PageResponseMapper {
 
-    default <T> PageResponse<T> toDto(Page<T> page) {
+    default <T> PageResponse<T> toResponse(Page<T> page) {
         Pageable pageable = page.getPageable();
 
         return PageResponse.<T>builder()
