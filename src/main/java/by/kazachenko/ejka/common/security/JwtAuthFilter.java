@@ -1,5 +1,6 @@
 package by.kazachenko.ejka.common.security;
 
+import by.kazachenko.ejka.user.model.enums.Role;
 import by.kazachenko.ejka.user.service.JwtService;
 import io.jsonwebtoken.Claims;
 import jakarta.annotation.Nonnull;
@@ -9,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -44,20 +46,22 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 jwtService.isTokenValid(token)) {
 
             Claims claims = jwtService.extractAllClaims(token);
-            String username = claims.getSubject();
+            String email = claims.getSubject();
             String role = claims.get("role", String.class);
+            String id = claims.get("userId", String.class);
 
-            SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role);
-
-            User principal = new User(username, "", List.of(authority));
+            CustomUserDetails principal = CustomUserDetails.builder()
+                    .id(id)
+                    .email(email)
+                    .role(Role.valueOf(role))
+                    .password(null)
+                    .build();
 
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                     principal,
                     null,
-                    List.of(authority)
+                    principal.getAuthorities()
             );
-
-            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
             SecurityContextHolder.getContext().setAuthentication(authToken);
         }

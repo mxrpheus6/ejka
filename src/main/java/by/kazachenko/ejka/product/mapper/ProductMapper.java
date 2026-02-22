@@ -1,6 +1,6 @@
 package by.kazachenko.ejka.product.mapper;
 
-import by.kazachenko.ejka.product.dto.request.ProductRequset;
+import by.kazachenko.ejka.product.dto.request.ProductRequest;
 import by.kazachenko.ejka.product.dto.response.ProductResponse;
 import by.kazachenko.ejka.product.model.Product;
 import org.mapstruct.BeanMapping;
@@ -17,9 +17,9 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface ProductMapper {
 
     ProductResponse toResponse(Product product);
-    Product toEntity(ProductRequset productRequest);
+    Product toEntity(ProductRequest productRequest);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateProductFromDto(ProductRequset productRequset, @MappingTarget Product product);
+    void updateProductFromDto(ProductRequest productRequest, @MappingTarget Product product);
 
 }

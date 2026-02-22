@@ -19,6 +19,12 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        return new CustomUserDetails(user);
+        return CustomUserDetails.builder()
+                .id(user.getId().toString())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .role(user.getRole())
+                .tokenVersion(user.getTokenVersion())
+                .build();
     }
 }

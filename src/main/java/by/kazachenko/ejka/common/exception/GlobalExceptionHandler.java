@@ -2,6 +2,7 @@ package by.kazachenko.ejka.common.exception;
 
 import by.kazachenko.ejka.common.dto.exception.ExceptionDto;
 import by.kazachenko.ejka.common.dto.exception.Validation;
+import by.kazachenko.ejka.common.exception.cutom.ProductNotFoundException;
 import by.kazachenko.ejka.common.exception.cutom.UserAlreadyExistsException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -91,6 +92,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
                 .build();
+    }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<ExceptionDto> handleProductNotFoundException(ProductNotFoundException e) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ExceptionDto(LocalDateTime.now(), e.getMessage(), null));
     }
 
     @ExceptionHandler(Exception.class)

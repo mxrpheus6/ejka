@@ -1,5 +1,6 @@
 package by.kazachenko.ejka.user.service.impl;
 
+import by.kazachenko.ejka.common.security.CustomUserDetails;
 import by.kazachenko.ejka.user.model.User;
 import by.kazachenko.ejka.user.repository.UserRepository;
 import by.kazachenko.ejka.user.service.JwtService;
@@ -37,6 +38,7 @@ public class JwtServiceImpl implements JwtService {
         return Jwts.builder()
                 .setSubject(user.getEmail())
                 .setHeaderParam("typ", "JWT")
+                .claim("userId", user.getId().toString())
                 .claim("role", user.getRole().name())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpiration))
@@ -49,6 +51,34 @@ public class JwtServiceImpl implements JwtService {
         return Jwts.builder()
                 .setSubject(user.getEmail())
                 .setHeaderParam("typ", "JWT")
+                .claim("userId", user.getId().toString())
+                .claim("role", user.getRole().name())
+                .claim("version", user.getTokenVersion())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + refreshTokenExpiration))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    @Override
+    public String generateAccessToken(CustomUserDetails user) {
+        return Jwts.builder()
+                .setSubject(user.getEmail())
+                .setHeaderParam("typ", "JWT")
+                .claim("userId", user.getId())
+                .claim("role", user.getRole().name())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpiration))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    @Override
+    public String generateRefreshToken(CustomUserDetails user) {
+        return Jwts.builder()
+                .setSubject(user.getEmail())
+                .setHeaderParam("typ", "JWT")
+                .claim("userId", user.getId())
                 .claim("role", user.getRole().name())
                 .claim("version", user.getTokenVersion())
                 .setIssuedAt(new Date())

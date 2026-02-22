@@ -17,7 +17,11 @@ import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -31,8 +35,8 @@ import lombok.Setter;
         name = "products",
         indexes = {
                 @Index(name = "idx_product_barcode", columnList = "barcode"),
-                @Index(name = "idx_product_title", columnList = "title"),
-                @Index(name = "idx_product_creator", columnList = "creator_id")
+                @Index(name = "idx_product_creator", columnList = "creator_id"),
+                @Index(name = "idx_product_created_at", columnList = "createdAt")
         })
 @Getter
 @Setter
@@ -53,18 +57,25 @@ public class Product {
 
     private Integer calories;
 
-    private Double proteins;
+    @Column(precision = 6, scale = 2, nullable = false)
+    private BigDecimal proteins;
 
-    private Double fats;
+    @Column(precision = 6, scale = 2, nullable = false)
+    private BigDecimal fats;
 
-    private Double carbohydrates;
+    @Column(precision = 6, scale = 2, nullable = false)
+    private BigDecimal carbohydrates;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Builder.Default
     private ModerationStatus moderationStatus = ModerationStatus.PENDING;
 
     @Enumerated(EnumType.STRING)
     private ProductRating rating;
+
+    @Column(nullable = false, updatable = false)
+    private Instant createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id")
@@ -76,11 +87,18 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImage> images;
 
-    public void updateRating() {
+    @PrePersist
+    public void prePersist() {
+        this.rating = calculateSimplifiedRating(calories, proteins, fats, carbohydrates);
+        this.createdAt = Instant.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
         this.rating = calculateSimplifiedRating(calories, proteins, fats, carbohydrates);
     }
 
-    private ProductRating calculateSimplifiedRating(Integer calories, Double proteins, Double fats, Double carbohydrates) {
+    private ProductRating calculateSimplifiedRating(Integer calories, BigDecimal proteins, BigDecimal fats, BigDecimal carbohydrates) {
         int energyPoints = getPoints(calories, 335);
         int fatPoints = getPoints(fats, 10);
         int carbPoints = getPoints(carbohydrates, 13);
@@ -88,7 +106,10 @@ public class Product {
         int negativeScore = energyPoints + fatPoints + carbPoints;
 
         int proteinPoints = getPoints(proteins, 1.6);
-        if (proteinPoints > 5) proteinPoints = 5;
+
+        if (proteinPoints > 5) {
+            proteinPoints = 5;
+        }
 
         int finalScore = negativeScore - proteinPoints;
 

@@ -1,5 +1,6 @@
 package by.kazachenko.ejka.user.service.impl;
 
+import by.kazachenko.ejka.common.exception.ExceptionMessages;
 import by.kazachenko.ejka.common.exception.cutom.UserAlreadyExistsException;
 import by.kazachenko.ejka.common.security.CustomUserDetails;
 import by.kazachenko.ejka.user.dto.request.RefreshTokenRequest;
@@ -34,11 +35,11 @@ public class AuthServiceImpl implements AuthService {
     public AuthResponse register(RegisterRequest request) {
 
         if (userRepository.existsByEmail(request.email())) {
-            throw new UserAlreadyExistsException("Пользователь с таким email уже существует");
+            throw new UserAlreadyExistsException(ExceptionMessages.USER_EMAIL_ALREADY_EXISTS);
         }
 
         if (userRepository.existsByUsername(request.username())) {
-            throw new UserAlreadyExistsException("Пользователь с таким именем уже существует");
+            throw new UserAlreadyExistsException(ExceptionMessages.USER_USERNAME_ALREADY_EXISTS);
         }
 
         User user = User.builder()
@@ -63,11 +64,10 @@ public class AuthServiceImpl implements AuthService {
                 new UsernamePasswordAuthenticationToken(request.email(), request.password())
         );
 
-        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-        User user = customUserDetails.getUser();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
-        String accessToken = jwtService.generateAccessToken(user);
-        String refreshToken = jwtService.generateRefreshToken(user);
+        String accessToken = jwtService.generateAccessToken(userDetails);
+        String refreshToken = jwtService.generateRefreshToken(userDetails);
 
         return new AuthResponse(accessToken, refreshToken);
     }
@@ -82,7 +82,7 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow();
 
         if (!user.getTokenVersion().equals(tokenVersion)) {
-            throw new BadCredentialsException("Token version is invalid. Please login again.");
+            throw new BadCredentialsException(ExceptionMessages.TOKEN_INVALID);
         }
 
         String newAccessToken = jwtService.generateAccessToken(user);

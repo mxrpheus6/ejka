@@ -35,7 +35,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-    restart: always
+    restart: unless-stopped
 
   redis:
     image: redis:7-alpine
@@ -51,7 +51,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-    restart: always
+    restart: unless-stopped
 
   minio:
     image: minio/minio:RELEASE.2025-07-23T15-54-02Z
@@ -67,11 +67,29 @@ services:
     ports:
       - "9000:9000"
       - "9001:9001"
+    restart: unless-stopped
+  rabbitmq:
+    image: rabbitmq:4.2.4-management
+    hostname: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin123
+      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit log_levels [{connection,error},{default,error}] disk_free_limit 2147483648
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+      - ejka-network
+    restart: unless-stopped
+
 
 volumes:
   postgres_data:
   redis_data:
   minio_data:
+  rabbitmq_data:
 
 networks:
   ejka-network:
