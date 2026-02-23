@@ -17,5 +17,7 @@ public final class ExceptionMessages {
     public static final String PRODUCT_NOT_FOUND = "Продукт не найден";
     public static final String PRODUCT_BARCODE_ALREADY_EXISTS  = "Продукт с таким штрих-кодом уже существует";
 
+    public static final String REVIEW_NOT_FOUND = "Отзыв не найден";
+    public static final String REVIEW_ALREADY_EXISTS = "Отзыв уже существует";
 
 }

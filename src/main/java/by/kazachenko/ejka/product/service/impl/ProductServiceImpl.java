@@ -14,7 +14,6 @@ import by.kazachenko.ejka.product.model.enums.ModerationStatus;
 import by.kazachenko.ejka.product.repository.ProductRepository;
 import by.kazachenko.ejka.product.service.ProductService;
 import by.kazachenko.ejka.user.model.User;
-import by.kazachenko.ejka.user.model.enums.Role;
 import by.kazachenko.ejka.user.repository.UserRepository;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;

@@ -14,6 +14,7 @@ import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import java.time.Instant;
@@ -24,6 +25,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 
 @Entity
 @Table(
@@ -31,8 +33,6 @@ import lombok.Setter;
         uniqueConstraints = @UniqueConstraint(columnNames = {"author_id", "product_id"}),
         indexes = {
                 @Index(name = "idx_review_product", columnList = "product_id"),
-                @Index(name = "idx_review_author", columnList = "author_id"),
-                @Index(name = "idx_review_prod_date", columnList = "product_id, created_at DESC")
         }
 )
 @Getter
@@ -66,4 +66,11 @@ public class Review {
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewVote> votes;
 
+    @Formula("(SELECT COALESCE(SUM(CASE WHEN v.is_upvote = true THEN 1 ELSE -1 END), 0) FROM review_votes v WHERE v.review_id = id)")
+    private Integer usefulScore;
+
+    @PrePersist
+    public void prePersist() {
+        createdAt = Instant.now();
+    }
 }

@@ -3,6 +3,7 @@ package by.kazachenko.ejka.common.exception;
 import by.kazachenko.ejka.common.dto.exception.ExceptionDto;
 import by.kazachenko.ejka.common.dto.exception.Validation;
 import by.kazachenko.ejka.common.exception.cutom.ProductNotFoundException;
+import by.kazachenko.ejka.common.exception.cutom.ReviewAlreadyExistsException;
 import by.kazachenko.ejka.common.exception.cutom.UserAlreadyExistsException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -13,6 +14,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -62,6 +64,13 @@ public class GlobalExceptionHandler {
                 .body(new ExceptionDto(LocalDateTime.now(), e.getMessage(), null));
     }
 
+    @ExceptionHandler(ReviewAlreadyExistsException.class)
+    public ResponseEntity<ExceptionDto> handleReviewAlreadyExistsException(ReviewAlreadyExistsException e) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(new ExceptionDto(LocalDateTime.now(), e.getMessage(), null));
+    }
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ExceptionDto> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         return ResponseEntity
@@ -98,6 +107,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionDto> handleProductNotFoundException(ProductNotFoundException e) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
+                .body(new ExceptionDto(LocalDateTime.now(), e.getMessage(), null));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ExceptionDto> handleAccessDeniedException(AccessDeniedException e) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
                 .body(new ExceptionDto(LocalDateTime.now(), e.getMessage(), null));
     }
 

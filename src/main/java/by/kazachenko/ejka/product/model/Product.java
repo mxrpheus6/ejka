@@ -29,6 +29,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 
 @Entity
 @Table(
@@ -83,6 +84,12 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews;
+
+    @Formula("(SELECT COALESCE(ROUND(AVG(r.rating * 1.0), 2), 0.00) FROM reviews r WHERE r.product_id = id)")
+    private Double averageUserRating;
+
+    @Formula("(SELECT COUNT(r.id) FROM reviews r WHERE r.product_id = id)")
+    private Integer reviewsCount;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImage> images;

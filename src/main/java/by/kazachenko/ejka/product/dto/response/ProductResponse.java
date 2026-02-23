@@ -11,6 +11,8 @@ public record ProductResponse(
         String barcode,
         String title,
         ProductRating rating,
+        Double averageUserRating,
+        Integer reviewsCount,
         Instant createdAt,
         ModerationStatus moderationStatus,
         Integer calories,

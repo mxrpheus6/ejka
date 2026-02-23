@@ -24,8 +24,7 @@ import lombok.Setter;
         name = "review_votes",
         uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "review_id"}),
         indexes = {
-                @Index(name = "idx_vote_review", columnList = "review_id")
-        }
+                @Index(name = "idx_vote_review_upvote", columnList = "review_id, is_upvote")        }
 )
 @Getter
 @Setter
