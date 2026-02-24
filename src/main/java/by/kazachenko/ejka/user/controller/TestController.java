@@ -1,5 +1,6 @@
 package by.kazachenko.ejka.user.controller;
 
+import by.kazachenko.ejka.product.rabbitmq.ImagePublisher;
 import by.kazachenko.ejka.product.service.ProductImageService;
 import io.minio.BucketExistsArgs;
 import io.minio.GetPresignedObjectUrlArgs;
@@ -11,6 +12,7 @@ import io.minio.http.Method;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,6 +33,8 @@ public class TestController {
 
     private final ProductImageService productImageService;
 
+    private final ImagePublisher imagePublisher;
+
     @PreAuthorize("hasRole('MODERATOR')")
     @GetMapping("/moder/dashboard")
     public String adminDashboard() {
@@ -40,6 +44,7 @@ public class TestController {
     @PreAuthorize("hasAnyRole('USER','MODERATOR')")
     @PostMapping("/user/profile")
     public String userProfile() {
-        return "Admin only";
+        imagePublisher.sendImageToQueue(UUID.randomUUID().toString(), "test");
+        return "User only";
     }
 }

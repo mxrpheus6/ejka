@@ -30,6 +30,22 @@ spring:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
 
+  rabbitmq:
+    username: ${RABBITMQ_USER}
+    password: ${RABBITMQ_PASSWORD}
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}
+
+rabbitmq:
+  exchange: image.exchange
+  queues:
+    image-processing:
+      name: ${RABBIT_QUEUE_REQUESTS:q.image.processing.requests}
+      routing-key: image.request.rk
+    image-responses:
+      name: ${RABBIT_QUEUE_RESULTS:q.image.processing.responses}
+      routing-key: image.response.rk
+
 jwt:
   secret: ${JWT_SECRET}
   access:
