@@ -1,7 +1,5 @@
 package by.kazachenko.ejka.common.security;
 
-import by.kazachenko.ejka.common.exception.cutom.UserNotFoundException;
-import by.kazachenko.ejka.user.model.User;
 import by.kazachenko.ejka.user.model.enums.Role;
 import by.kazachenko.ejka.user.repository.UserRepository;
 import java.util.UUID;
