@@ -44,7 +44,6 @@ public class TestController {
     @PreAuthorize("hasAnyRole('USER','MODERATOR')")
     @PostMapping("/user/profile")
     public String userProfile() {
-        imagePublisher.sendImageToQueue(UUID.randomUUID().toString(), "test");
         return "User only";
     }
 }

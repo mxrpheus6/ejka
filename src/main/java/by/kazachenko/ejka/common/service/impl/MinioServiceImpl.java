@@ -1,13 +1,14 @@
 package by.kazachenko.ejka.common.service.impl;
 
 import by.kazachenko.ejka.common.service.MinioService;
-import io.minio.BucketExistsArgs;
-import io.minio.MakeBucketArgs;
+import io.minio.GetPresignedObjectUrlArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.RemoveObjectArgs;
+import io.minio.http.Method;
 import java.io.InputStream;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
@@ -19,23 +20,21 @@ public class MinioServiceImpl implements MinioService {
 
     private final MinioClient minioClient;
 
+    @SneakyThrows
+    public String getFileUrl(String bucketName, String objectKey) {
+        return minioClient.getPresignedObjectUrl(
+                GetPresignedObjectUrlArgs.builder()
+                        .method(Method.GET)
+                        .bucket(bucketName)
+                        .object(objectKey)
+                        .expiry(1, TimeUnit.HOURS)
+                        .build()
+        );
+    }
+
     @Override
     @SneakyThrows
     public String uploadFile(MultipartFile file, String bucketName) {
-        boolean isBucketFound = minioClient.bucketExists(
-                BucketExistsArgs.builder()
-                        .bucket(bucketName)
-                        .build()
-        );
-
-        if (!isBucketFound) {
-            minioClient.makeBucket(
-                    MakeBucketArgs.builder()
-                            .bucket(bucketName)
-                            .build()
-            );
-        }
-
         String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
 
         try (InputStream inputStream = file.getInputStream()) {

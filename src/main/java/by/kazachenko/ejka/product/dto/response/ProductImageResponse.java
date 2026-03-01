@@ -1,8 +1,10 @@
 package by.kazachenko.ejka.product.dto.response;
 
+import by.kazachenko.ejka.product.model.enums.ProductImageType;
+
 public record ProductImageResponse(
-        String id,
-        String url,
-        boolean isMain
+        ProductImageType type,
+        String objectKey
 ) {
+
 }

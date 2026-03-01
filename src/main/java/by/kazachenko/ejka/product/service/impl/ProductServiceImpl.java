@@ -11,9 +11,12 @@ import by.kazachenko.ejka.product.dto.response.ProductResponse;
 import by.kazachenko.ejka.product.mapper.ProductMapper;
 import by.kazachenko.ejka.product.model.Product;
 import by.kazachenko.ejka.product.model.enums.ModerationStatus;
+import by.kazachenko.ejka.product.model.enums.ProductImageType;
 import by.kazachenko.ejka.product.repository.ProductRepository;
+import by.kazachenko.ejka.product.service.ProductImageService;
 import by.kazachenko.ejka.product.service.ProductService;
 import by.kazachenko.ejka.user.model.User;
+import by.kazachenko.ejka.user.model.enums.Role;
 import by.kazachenko.ejka.user.repository.UserRepository;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -21,20 +24,24 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
-    private final ProductMapper productMapper;
+    private final UserRepository userRepository;
 
+    private final ProductMapper productMapper;
     private final PageResponseMapper pageResponseMapper;
 
+    private final ProductImageService productImageService;
     private final SecurityUtils securityUtils;
-    private final UserRepository userRepository;
+
 
     @Override
     @Transactional(readOnly = true)
@@ -135,6 +142,39 @@ public class ProductServiceImpl implements ProductService {
         if (updatedRows == 0) {
             throw new ProductNotFoundException(ExceptionMessages.PRODUCT_NOT_FOUND);
         }
+    }
+
+    @Override
+    @Transactional
+    public void uploadProductImage(UUID productId, ProductImageType type, MultipartFile file) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(ExceptionMessages.PRODUCT_NOT_FOUND));
+
+        UUID currentUserId = securityUtils.getLoggedUserId();
+
+        boolean isAdmin = securityUtils.getLoggedUserRole() == Role.ROLE_MODERATOR;
+
+        if (!isAdmin && !product.getCreator().getId().equals(currentUserId)) {
+            throw new AccessDeniedException("У вас нет прав на редактирование этого продукта");
+        }
+        productImageService.uploadImage(product, type, file);
+    }
+
+    @Override
+    @Transactional
+    public void deleteProductImage(UUID productId, ProductImageType type) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(ExceptionMessages.PRODUCT_NOT_FOUND));
+
+        UUID currentUserId = securityUtils.getLoggedUserId();
+
+        boolean isAdmin = securityUtils.getLoggedUserRole() == Role.ROLE_MODERATOR;
+
+        if (!isAdmin && !product.getCreator().getId().equals(currentUserId)) {
+            throw new AccessDeniedException("У вас нет прав на редактирование этого продукта");
+        }
+
+        productImageService.deleteImage(product, type);
     }
 
 }

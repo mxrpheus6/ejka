@@ -4,7 +4,9 @@ import by.kazachenko.ejka.common.dto.response.PageResponse;
 import by.kazachenko.ejka.product.dto.request.ProductRequest;
 import by.kazachenko.ejka.product.dto.response.ProductResponse;
 import by.kazachenko.ejka.product.model.enums.ModerationStatus;
+import by.kazachenko.ejka.product.model.enums.ProductImageType;
 import java.util.UUID;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface ProductService {
 
@@ -17,6 +19,9 @@ public interface ProductService {
 
     void deleteProductById(UUID id);
     void deleteProductByBarcode(String barcode);
+
+    void uploadProductImage(UUID productId, ProductImageType type, MultipartFile file);
+    void deleteProductImage(UUID productId, ProductImageType type);
 
     void changeModerationStatus(UUID productId, ModerationStatus status);
 

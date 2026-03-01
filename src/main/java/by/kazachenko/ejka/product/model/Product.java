@@ -22,6 +22,7 @@ import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -29,6 +30,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Formula;
 
 @Entity
@@ -91,8 +93,10 @@ public class Product {
     @Formula("(SELECT COUNT(r.id) FROM reviews r WHERE r.product_id = id)")
     private Integer reviewsCount;
 
+    @BatchSize(size = 20)
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductImage> images;
+    @Builder.Default
+    private List<ProductImage> images = new ArrayList<>();
 
     @PrePersist
     public void prePersist() {

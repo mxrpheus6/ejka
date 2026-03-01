@@ -1,6 +1,5 @@
 package by.kazachenko.ejka.product.rabbitmq;
 
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,13 +17,8 @@ public class ImagePublisher {
     @Value("${rabbitmq.queues.image-processing.routing-key}")
     private String routingKey;
 
-    public void sendImageToQueue(String imageId, String imageUrl) {
-        var payload = Map.of(
-                "id", imageId,
-                "url", imageUrl
-        );
-
-        rabbitTemplate.convertAndSend(exchange, routingKey, payload);
+    public void sendImageToQueue(ImageProcessingEvent event) {
+        rabbitTemplate.convertAndSend(exchange, routingKey, event);
     }
 
 }

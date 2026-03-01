@@ -1,15 +1,14 @@
 package by.kazachenko.ejka.product.service.impl;
 
-import by.kazachenko.ejka.common.exception.cutom.ProductNotFoundException;
 import by.kazachenko.ejka.common.service.impl.MinioServiceImpl;
 import by.kazachenko.ejka.product.model.Product;
 import by.kazachenko.ejka.product.model.ProductImage;
 import by.kazachenko.ejka.product.model.enums.ProductImageType;
+import by.kazachenko.ejka.product.rabbitmq.ImageProcessingEvent;
+import by.kazachenko.ejka.product.rabbitmq.ImagePublisher;
 import by.kazachenko.ejka.product.repository.ProductImageRepository;
-import by.kazachenko.ejka.product.repository.ProductRepository;
 import by.kazachenko.ejka.product.service.ProductImageService;
 import java.util.Optional;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,20 +21,25 @@ public class ProductImageServiceImpl implements ProductImageService {
 
     private final MinioServiceImpl minioService;
     private final ProductImageRepository productImageRepository;
-    private final ProductRepository productRepository;
+
+    private final ImagePublisher imagePublisher;
 
     @Value("${minio.buckets.products}")
     private String productsBucketName;
 
-    @Transactional
-    public void uploadImage(UUID productId, ProductImageType type, MultipartFile file) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException("Продукт не найден"));
+    @Override
+    public String generatePresignedUrl(String objectKey) {
+        return minioService.getFileUrl(productsBucketName, objectKey);
+    }
 
+    @Transactional
+    public void uploadImage(Product product, ProductImageType type, MultipartFile file) {
         String newObjectKey = minioService.uploadFile(file, productsBucketName);
 
         Optional<ProductImage> optionalProductImage = productImageRepository
                 .findByProductAndType(product, type);
+
+        ProductImage savedImage;
 
         if (optionalProductImage.isPresent()) {
             ProductImage existingImage = optionalProductImage.get();
@@ -43,7 +47,8 @@ public class ProductImageServiceImpl implements ProductImageService {
 
             existingImage.setObjectKey(newObjectKey);
             existingImage.setContentType(file.getContentType());
-            productImageRepository.save(existingImage);
+
+            savedImage = productImageRepository.save(existingImage);
 
             minioService.deleteFile(productsBucketName, oldObjectKey);
         } else {
@@ -54,8 +59,30 @@ public class ProductImageServiceImpl implements ProductImageService {
                     .contentType(file.getContentType())
                     .build();
 
-            productImageRepository.save(newImage);
+            savedImage = productImageRepository.save(newImage);
         }
+
+        if (type == ProductImageType.INGREDIENTS) {
+            ImageProcessingEvent event = new ImageProcessingEvent(
+                    savedImage.getId().toString(),
+                    savedImage.getObjectKey()
+            );
+
+            imagePublisher.sendImageToQueue(event);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deleteImage(Product product, ProductImageType type) {
+        ProductImage existingImage = productImageRepository.findByProductAndType(product, type)
+                .orElseThrow(() -> new RuntimeException("Фотография не найдена")); //TODO exception
+
+        String objectKey = existingImage.getObjectKey();
+
+        productImageRepository.delete(existingImage);
+
+        minioService.deleteFile(productsBucketName, objectKey);
     }
 
 }
