@@ -2,6 +2,10 @@ package by.kazachenko.ejka.common.exception;
 
 import by.kazachenko.ejka.common.dto.exception.ExceptionDto;
 import by.kazachenko.ejka.common.dto.exception.Validation;
+import by.kazachenko.ejka.common.exception.cutom.AdditiveAlreadyExistsException;
+import by.kazachenko.ejka.common.exception.cutom.AdditiveNotFoundException;
+import by.kazachenko.ejka.common.exception.cutom.OriginAlreadyExistsException;
+import by.kazachenko.ejka.common.exception.cutom.OriginNotFoundException;
 import by.kazachenko.ejka.common.exception.cutom.ProductNotFoundException;
 import by.kazachenko.ejka.common.exception.cutom.ReviewAlreadyExistsException;
 import by.kazachenko.ejka.common.exception.cutom.UserAlreadyExistsException;
@@ -71,6 +75,20 @@ public class GlobalExceptionHandler {
                 .body(new ExceptionDto(LocalDateTime.now(), e.getMessage(), null));
     }
 
+    @ExceptionHandler(AdditiveAlreadyExistsException.class)
+    public ResponseEntity<ExceptionDto> handleAdditiveAlreadyExistsException(AdditiveAlreadyExistsException e) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(new ExceptionDto(LocalDateTime.now(), e.getMessage(), null));
+    }
+
+    @ExceptionHandler(OriginAlreadyExistsException.class)
+    public ResponseEntity<ExceptionDto> handleOriginAlreadyExistsException(OriginAlreadyExistsException e) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(new ExceptionDto(LocalDateTime.now(), e.getMessage(), null));
+    }
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ExceptionDto> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         return ResponseEntity
@@ -105,6 +123,20 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<ExceptionDto> handleProductNotFoundException(ProductNotFoundException e) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ExceptionDto(LocalDateTime.now(), e.getMessage(), null));
+    }
+
+    @ExceptionHandler(AdditiveNotFoundException.class)
+    public ResponseEntity<ExceptionDto> handleAdditiveNotFoundException(AdditiveNotFoundException e) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ExceptionDto(LocalDateTime.now(), e.getMessage(), null));
+    }
+
+    @ExceptionHandler(OriginNotFoundException.class)
+    public ResponseEntity<ExceptionDto> handleOriginNotFoundException(OriginNotFoundException e) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(new ExceptionDto(LocalDateTime.now(), e.getMessage(), null));

@@ -84,7 +84,7 @@ services:
       - ejka-network
     restart: unless-stopped
   ocr_worker:
-    build: ../dimploma
+    build: ../ejka-worker
     container_name: ejka_ocr_worker
     depends_on:
       - rabbitmq
