@@ -35,6 +35,7 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
+    @Transactional
     public AuthResponse register(RegisterRequest request) {
 
         if (userRepository.existsByEmail(request.email())) {
@@ -76,6 +77,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public AuthResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
         Claims claims = jwtService.extractAllClaims(refreshTokenRequest.refreshToken());
         String email = claims.getSubject();

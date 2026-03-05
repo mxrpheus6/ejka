@@ -36,7 +36,7 @@ public class ReviewController {
     public ResponseEntity<PageResponse<ReviewResponse>> getAllReviewsByProductId(
             @RequestParam("productId") UUID productId,
             @RequestParam(defaultValue = "0") @Min(0) Integer offset,
-            @RequestParam(defaultValue = "10") @Min(1) @Max(100) Integer limit,
+            @RequestParam(defaultValue = "10") @Min(1) @Max(20) Integer limit,
             @RequestParam(defaultValue = "createdAt") String sortBy,
             @RequestParam(defaultValue = "desc") String sortDirection
     ) {
