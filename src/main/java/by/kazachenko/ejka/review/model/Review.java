@@ -2,6 +2,7 @@ package by.kazachenko.ejka.review.model;
 
 import by.kazachenko.ejka.product.model.Product;
 import by.kazachenko.ejka.user.model.User;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CheckConstraint;
 import jakarta.persistence.Column;
@@ -17,14 +18,17 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import org.hibernate.annotations.Formula;
 
 @Entity
@@ -66,7 +70,10 @@ public class Review {
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewVote> votes;
 
-    @Formula("(SELECT COALESCE(SUM(CASE WHEN v.is_upvote = true THEN 1 ELSE -1 END), 0) FROM review_votes v WHERE v.review_id = id)")
+    @Formula("""
+    (SELECT COALESCE(SUM(CASE WHEN v.is_upvote = true THEN 1 ELSE -1 END), 0)
+    FROM review_votes v WHERE v.review_id = id)
+    """)
     private Integer usefulScore;
 
     @PrePersist

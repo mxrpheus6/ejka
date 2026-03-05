@@ -2,6 +2,7 @@ package by.kazachenko.ejka.product.dto.response;
 
 import by.kazachenko.ejka.product.model.enums.ModerationStatus;
 import by.kazachenko.ejka.product.model.enums.ProductRating;
+
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;

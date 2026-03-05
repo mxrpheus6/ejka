@@ -5,6 +5,7 @@ import by.kazachenko.ejka.product.dto.response.ProductImageResponse;
 import by.kazachenko.ejka.product.dto.response.ProductResponse;
 import by.kazachenko.ejka.product.model.Product;
 import by.kazachenko.ejka.product.model.ProductImage;
+
 import org.mapstruct.BeanMapping;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -19,6 +20,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface ProductMapper {
 
     ProductResponse toResponse(Product product);
+
     Product toEntity(ProductRequest productRequest);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

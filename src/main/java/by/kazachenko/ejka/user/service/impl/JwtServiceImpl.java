@@ -4,13 +4,17 @@ import by.kazachenko.ejka.common.security.CustomUserDetails;
 import by.kazachenko.ejka.user.model.User;
 import by.kazachenko.ejka.user.repository.UserRepository;
 import by.kazachenko.ejka.user.service.JwtService;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+
 import java.security.Key;
 import java.util.Date;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

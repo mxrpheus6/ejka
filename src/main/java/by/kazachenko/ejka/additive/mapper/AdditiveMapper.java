@@ -6,8 +6,10 @@ import by.kazachenko.ejka.additive.dto.response.OriginResponse;
 import by.kazachenko.ejka.additive.dto.response.WorkerAdditiveResponse;
 import by.kazachenko.ejka.additive.model.Additive;
 import by.kazachenko.ejka.additive.model.Origin;
+
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

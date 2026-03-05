@@ -2,7 +2,9 @@ package by.kazachenko.ejka.common.security;
 
 import by.kazachenko.ejka.user.model.User;
 import by.kazachenko.ejka.user.repository.UserRepository;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -12,8 +12,11 @@ import by.kazachenko.ejka.user.model.enums.Role;
 import by.kazachenko.ejka.user.repository.UserRepository;
 import by.kazachenko.ejka.user.service.AuthService;
 import by.kazachenko.ejka.user.service.JwtService;
+
 import io.jsonwebtoken.Claims;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -3,6 +3,7 @@ package by.kazachenko.ejka.review.mapper;
 import by.kazachenko.ejka.review.dto.request.ReviewRequest;
 import by.kazachenko.ejka.review.dto.response.ReviewResponse;
 import by.kazachenko.ejka.review.model.Review;
+
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

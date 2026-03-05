@@ -1,8 +1,10 @@
 package by.kazachenko.ejka.additive.dto.request;
 
 import by.kazachenko.ejka.additive.model.enums.DangerLevel;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
 import java.util.Set;
 
 public record AdditiveRequest(

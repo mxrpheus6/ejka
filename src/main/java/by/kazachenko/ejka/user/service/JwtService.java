@@ -2,6 +2,7 @@ package by.kazachenko.ejka.user.service;
 
 import by.kazachenko.ejka.common.security.CustomUserDetails;
 import by.kazachenko.ejka.user.model.User;
+
 import io.jsonwebtoken.Claims;
 
 public interface JwtService {

@@ -8,8 +8,11 @@ import by.kazachenko.ejka.product.rabbitmq.ImageProcessingEvent;
 import by.kazachenko.ejka.product.rabbitmq.ImagePublisher;
 import by.kazachenko.ejka.product.repository.ProductImageRepository;
 import by.kazachenko.ejka.product.service.ProductImageService;
+
 import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

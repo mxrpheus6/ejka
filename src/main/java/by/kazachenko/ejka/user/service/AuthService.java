@@ -8,8 +8,11 @@ import by.kazachenko.ejka.user.dto.request.RegisterRequest;
 public interface AuthService {
 
     AuthResponse register(RegisterRequest request);
+
     AuthResponse login(LoginRequest request);
+
     AuthResponse refreshToken(RefreshTokenRequest refreshToken);
+
     void invalidateAllSessions(String email);
 
 }

@@ -3,6 +3,7 @@ package by.kazachenko.ejka.additive.mapper;
 import by.kazachenko.ejka.additive.dto.request.OriginRequest;
 import by.kazachenko.ejka.additive.dto.response.OriginResponse;
 import by.kazachenko.ejka.additive.model.Origin;
+
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
