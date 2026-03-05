@@ -23,11 +23,14 @@ public interface AdditiveMapper {
 
     @Mapping(target = "origins", source = "origins", qualifiedByName = "mapOrigins")
     AdditiveResponse toResponse(Additive additive);
+
     WorkerAdditiveResponse toWorkerResponse(Additive additive);
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "origins", ignore = true)
     Additive toEntity(AdditiveRequest additiveRequest);
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "origins", ignore = true)
     void updateEntityFromRequest(AdditiveRequest request, @MappingTarget Additive additive);
 

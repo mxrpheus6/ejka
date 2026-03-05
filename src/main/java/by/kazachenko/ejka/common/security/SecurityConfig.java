@@ -38,6 +38,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/v1/products").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/v1/reviews").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/v1/additives/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/origins/**").permitAll()
                                 .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint((request, response, authException) -> {
