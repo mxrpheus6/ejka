@@ -1,5 +1,6 @@
 package by.kazachenko.ejka.product.model;
 
+import by.kazachenko.ejka.additive.model.Additive;
 import by.kazachenko.ejka.product.model.enums.ModerationStatus;
 import by.kazachenko.ejka.product.model.enums.ProductRating;
 import by.kazachenko.ejka.review.model.Review;
@@ -16,6 +17,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
@@ -25,7 +28,9 @@ import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
@@ -35,7 +40,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Formula;
 
 @Entity
 @Table(
@@ -91,16 +95,30 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews;
 
-    @Formula("(SELECT COALESCE(ROUND(AVG(r.rating * 1.0), 2), 0.00) FROM reviews r WHERE r.product_id = id)")
-    private Double averageUserRating;
+    @Column(name = "user_rating", precision = 3, scale = 2)
+    @Builder.Default
+    private BigDecimal userRating = BigDecimal.valueOf(0.0);
 
-    @Formula("(SELECT COUNT(r.id) FROM reviews r WHERE r.product_id = id)")
-    private Integer reviewsCount;
+    @Column(name = "reviews_count")
+    @Builder.Default
+    private Integer reviewsCount = 0;
 
     @BatchSize(size = 20)
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<ProductImage> images = new ArrayList<>();
+
+    @Column(columnDefinition = "TEXT")
+    private String compositionText;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "product_additives",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "additive_id")
+    )
+    @Builder.Default
+    private Set<Additive> additives = new HashSet<>();
 
     @PrePersist
     public void prePersist() {

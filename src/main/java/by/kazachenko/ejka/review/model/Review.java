@@ -74,7 +74,8 @@ public class Review {
     (SELECT COALESCE(SUM(CASE WHEN v.is_upvote = true THEN 1 ELSE -1 END), 0)
     FROM review_votes v WHERE v.review_id = id)
     """)
-    private Integer usefulScore;
+    @Builder.Default
+    private Integer usefulScore = 0;
 
     @PrePersist
     public void prePersist() {

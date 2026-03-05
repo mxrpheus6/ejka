@@ -67,7 +67,7 @@ public class ProductImageServiceImpl implements ProductImageService {
 
         if (type == ProductImageType.INGREDIENTS) {
             ImageProcessingEvent event = new ImageProcessingEvent(
-                    savedImage.getId().toString(),
+                    product.getId().toString(),
                     savedImage.getObjectKey()
             );
 

@@ -6,6 +6,8 @@ import by.kazachenko.ejka.product.dto.response.ProductResponse;
 import by.kazachenko.ejka.product.model.enums.ModerationStatus;
 import by.kazachenko.ejka.product.model.enums.ProductImageType;
 
+import by.kazachenko.ejka.product.rabbitmq.ParsedAdditive;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -31,5 +33,7 @@ public interface ProductService {
     void deleteProductImage(UUID productId, ProductImageType type);
 
     void changeModerationStatus(UUID productId, ModerationStatus status);
+
+    void updateProductAdditives(UUID productId, List<ParsedAdditive> parsedAdditives, String parsedText);
 
 }

@@ -14,7 +14,7 @@ public record ProductResponse(
         String title,
         List<ProductImageResponse> images,
         ProductRating rating,
-        Double averageUserRating,
+        BigDecimal userRating,
         Integer reviewsCount,
         Instant createdAt,
         ModerationStatus moderationStatus,

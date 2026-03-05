@@ -2,7 +2,6 @@ package by.kazachenko.ejka.review.service.impl;
 
 import by.kazachenko.ejka.common.dto.response.PageResponse;
 import by.kazachenko.ejka.common.exception.ExceptionMessages;
-import by.kazachenko.ejka.common.exception.cutom.ProductNotFoundException;
 import by.kazachenko.ejka.common.exception.cutom.ReviewAlreadyExistsException;
 import by.kazachenko.ejka.common.exception.cutom.ReviewNotFoundException;
 import by.kazachenko.ejka.common.mapper.PageResponseMapper;
@@ -103,12 +102,12 @@ public class ReviewServiceImpl implements ReviewService {
         User creatorRef = userRepository.getReferenceById(loggedUserId);
         review.setAuthor(creatorRef);
 
-        Product product = productRepository
-                .findById(request.productId())
-                .orElseThrow(() -> new ProductNotFoundException(ExceptionMessages.PRODUCT_NOT_FOUND));
-        review.setProduct(product);
+        Product proxyProduct = productRepository.getReferenceById(request.productId());
+        review.setProduct(proxyProduct);
 
         reviewRepository.save(review);
+
+        productRepository.recalculateAndUpdateUserRating(request.productId());
 
         return reviewMapper.toResponse(review);
     }
@@ -125,7 +124,11 @@ public class ReviewServiceImpl implements ReviewService {
             throw new AccessDeniedException("Вы не можете удалить чужой отзыв");
         }
 
+        UUID productId = review.getProduct().getId();
+
         reviewRepository.delete(review);
+
+        productRepository.recalculateAndUpdateUserRating(productId);
     }
 
     @Override

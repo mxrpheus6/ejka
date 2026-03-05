@@ -1,5 +1,7 @@
 package by.kazachenko.ejka.product.service.impl;
 
+import by.kazachenko.ejka.additive.model.Additive;
+import by.kazachenko.ejka.additive.repository.AdditiveRepository;
 import by.kazachenko.ejka.common.dto.response.PageResponse;
 import by.kazachenko.ejka.common.exception.ExceptionMessages;
 import by.kazachenko.ejka.common.exception.cutom.ProductAlreadyExistsException;
@@ -12,6 +14,7 @@ import by.kazachenko.ejka.product.mapper.ProductMapper;
 import by.kazachenko.ejka.product.model.Product;
 import by.kazachenko.ejka.product.model.enums.ModerationStatus;
 import by.kazachenko.ejka.product.model.enums.ProductImageType;
+import by.kazachenko.ejka.product.rabbitmq.ParsedAdditive;
 import by.kazachenko.ejka.product.repository.ProductRepository;
 import by.kazachenko.ejka.product.service.ProductImageService;
 import by.kazachenko.ejka.product.service.ProductService;
@@ -19,6 +22,7 @@ import by.kazachenko.ejka.user.model.User;
 import by.kazachenko.ejka.user.model.enums.Role;
 import by.kazachenko.ejka.user.repository.UserRepository;
 
+import java.util.List;
 import java.util.UUID;
 
 import lombok.RequiredArgsConstructor;
@@ -38,6 +42,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+    private final AdditiveRepository additiveRepository;
 
     private final ProductMapper productMapper;
     private final PageResponseMapper pageResponseMapper;
@@ -178,6 +183,28 @@ public class ProductServiceImpl implements ProductService {
         }
 
         productImageService.deleteImage(product, type);
+    }
+
+    @Override
+    @Transactional
+    public void updateProductAdditives(UUID productId, List<ParsedAdditive> parsedAdditives, String parsedText) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(ExceptionMessages.PRODUCT_NOT_FOUND));
+
+        product.setCompositionText(parsedText);
+
+        productRepository.deleteAdditivesByProductId(productId);
+
+        if (parsedAdditives != null && !parsedAdditives.isEmpty()) {
+            Long[] additiveIdsArray = parsedAdditives.stream()
+                    .map(ParsedAdditive::id)
+                    .filter(java.util.Objects::nonNull)
+                    .toArray(Long[]::new);
+
+            if (additiveIdsArray.length > 0) {
+                productRepository.batchInsertAdditives(productId, additiveIdsArray);
+            }
+        }
     }
 
 }

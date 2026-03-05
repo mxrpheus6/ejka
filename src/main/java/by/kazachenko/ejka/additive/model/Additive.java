@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 import java.util.HashSet;
@@ -67,6 +68,7 @@ public class Additive {
             inverseJoinColumns = @JoinColumn(name = "origin_id")
     )
     @BatchSize(size = 20)
+    @Builder.Default
     private Set<Origin> origins = new HashSet<>();
 
 }
