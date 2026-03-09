@@ -6,6 +6,10 @@ spring:
   application:
     name: ejka
 
+  threads:
+    virtual:
+      enabled: true
+
   servlet:
     multipart:
       max-file-size: ${SERVLET_MULTIPART_MAX_FILE_SIZE}

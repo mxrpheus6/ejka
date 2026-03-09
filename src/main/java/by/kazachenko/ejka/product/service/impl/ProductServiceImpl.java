@@ -1,7 +1,5 @@
 package by.kazachenko.ejka.product.service.impl;
 
-import by.kazachenko.ejka.additive.model.Additive;
-import by.kazachenko.ejka.additive.repository.AdditiveRepository;
 import by.kazachenko.ejka.common.dto.response.PageResponse;
 import by.kazachenko.ejka.common.exception.ExceptionMessages;
 import by.kazachenko.ejka.common.exception.cutom.ProductAlreadyExistsException;
@@ -42,7 +40,6 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
-    private final AdditiveRepository additiveRepository;
 
     private final ProductMapper productMapper;
     private final PageResponseMapper pageResponseMapper;
