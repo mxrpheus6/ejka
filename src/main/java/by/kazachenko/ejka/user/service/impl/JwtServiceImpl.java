@@ -22,8 +22,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class JwtServiceImpl implements JwtService {
 
-    private final UserRepository userRepository;
-
     @Value("${jwt.secret}")
     private String secret;
 

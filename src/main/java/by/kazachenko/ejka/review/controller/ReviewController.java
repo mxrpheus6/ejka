@@ -4,12 +4,14 @@ import by.kazachenko.ejka.common.dto.response.PageResponse;
 import by.kazachenko.ejka.review.dto.request.ReviewRequest;
 import by.kazachenko.ejka.review.dto.request.ReviewVoteRequest;
 import by.kazachenko.ejka.review.dto.response.ReviewResponse;
+import by.kazachenko.ejka.review.dto.response.UserReviewVoteResponse;
 import by.kazachenko.ejka.review.service.ReviewService;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 
+import java.util.List;
 import java.util.UUID;
 
 import lombok.RequiredArgsConstructor;
@@ -91,6 +93,11 @@ public class ReviewController {
         reviewService.voteForReview(reviewId, voteRequest);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/my-votes")
+    public ResponseEntity<List<UserReviewVoteResponse>> getMyVotes(@RequestParam UUID productId) {
+        return ResponseEntity.ok(reviewService.getUserUpvotedReviewIds(productId));
     }
 
 }

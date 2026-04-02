@@ -4,7 +4,9 @@ import by.kazachenko.ejka.common.dto.response.PageResponse;
 import by.kazachenko.ejka.review.dto.request.ReviewRequest;
 import by.kazachenko.ejka.review.dto.request.ReviewVoteRequest;
 import by.kazachenko.ejka.review.dto.response.ReviewResponse;
+import by.kazachenko.ejka.review.dto.response.UserReviewVoteResponse;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface ReviewService {
@@ -30,5 +32,7 @@ public interface ReviewService {
     void deleteReviewById(UUID id);
 
     void voteForReview(UUID reviewId, ReviewVoteRequest voteRequest);
+
+    List<UserReviewVoteResponse> getUserUpvotedReviewIds(UUID productId);
 
 }

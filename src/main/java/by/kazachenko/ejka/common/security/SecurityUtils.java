@@ -14,9 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class SecurityUtils {
-
-    private final UserRepository userRepository;
-
+    
     public UUID getLoggedUserId() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails principal = (CustomUserDetails) auth.getPrincipal();

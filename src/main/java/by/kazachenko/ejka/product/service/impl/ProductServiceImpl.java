@@ -7,7 +7,9 @@ import by.kazachenko.ejka.common.exception.cutom.ProductNotFoundException;
 import by.kazachenko.ejka.common.mapper.PageResponseMapper;
 import by.kazachenko.ejka.common.security.SecurityUtils;
 import by.kazachenko.ejka.product.dto.request.ProductRequest;
+import by.kazachenko.ejka.product.dto.response.ProductAllResponse;
 import by.kazachenko.ejka.product.dto.response.ProductResponse;
+import by.kazachenko.ejka.product.dto.response.ProductScoreResponse;
 import by.kazachenko.ejka.product.mapper.ProductMapper;
 import by.kazachenko.ejka.product.model.Product;
 import by.kazachenko.ejka.product.model.enums.ModerationStatus;
@@ -44,13 +46,14 @@ public class ProductServiceImpl implements ProductService {
     private final ProductMapper productMapper;
     private final PageResponseMapper pageResponseMapper;
 
+    private final ProductScoringServiceImpl productScoringService;
     private final ProductImageService productImageService;
     private final SecurityUtils securityUtils;
 
 
     @Override
     @Transactional(readOnly = true)
-    public PageResponse<ProductResponse> getAllProducts(
+    public PageResponse<ProductAllResponse> getAllProducts(
             Integer offset,
             Integer limit,
             String sortBy,
@@ -60,9 +63,9 @@ public class ProductServiceImpl implements ProductService {
 
         Pageable pageable = PageRequest.of(offset, limit, Sort.by(direction, sortBy));
 
-        Page<ProductResponse> responsePage = productRepository
+        Page<ProductAllResponse> responsePage = productRepository
                 .findAll(pageable)
-                .map(productMapper::toResponse);
+                .map(productMapper::toAllResponse);
 
         return pageResponseMapper.toResponse(responsePage);
     }
@@ -202,6 +205,19 @@ public class ProductServiceImpl implements ProductService {
                 productRepository.batchInsertAdditives(productId, additiveIdsArray);
             }
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ProductScoreResponse getProductAnalysis(UUID productId) {
+        // Достаем продукт из базы.
+        // ВАЖНО: Если additives лежат как Lazy, убедись, что они подтянутся,
+        // например через @EntityGraph в репозитории, чтобы не словить N+1
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(ExceptionMessages.PRODUCT_NOT_FOUND));
+
+        // Отдаем сущность в калькулятор и возвращаем готовый DTO
+        return productScoringService.calculateScoreDetails(product);
     }
 
 }

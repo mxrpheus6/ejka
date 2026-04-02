@@ -2,6 +2,7 @@ package by.kazachenko.ejka.product.model;
 
 import by.kazachenko.ejka.additive.model.Additive;
 import by.kazachenko.ejka.product.model.enums.ModerationStatus;
+import by.kazachenko.ejka.product.model.enums.ProductCategory;
 import by.kazachenko.ejka.product.model.enums.ProductRating;
 import by.kazachenko.ejka.review.model.Review;
 import by.kazachenko.ejka.user.model.User;
@@ -65,6 +66,10 @@ public class Product {
 
     @Column(nullable = false)
     private String title;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ProductCategory category;
 
     private Integer calories;
 

@@ -1,5 +1,6 @@
 package by.kazachenko.ejka.product.dto.request;
 
+import by.kazachenko.ejka.product.model.enums.ProductCategory;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -20,6 +21,9 @@ public record ProductRequest(
         @NotBlank(message = "{product_request.title.not_blank}")
         @Size(min = 2, max = 255, message = "{product_request.title.size}")
         String title,
+
+        @NotNull(message = "{product_request.category.not_null}")
+        ProductCategory category,
 
         @NotNull(message = "{product_request.calories.not_null}")
         @Min(value = 0, message = "{product_request.calories.min}")

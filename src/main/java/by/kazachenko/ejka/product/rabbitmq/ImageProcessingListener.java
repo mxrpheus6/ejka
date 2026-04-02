@@ -1,10 +1,10 @@
 package by.kazachenko.ejka.product.rabbitmq;
 
+import by.kazachenko.ejka.product.cache.ScanResultCache;
 import by.kazachenko.ejka.product.service.ProductService;
 
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
@@ -17,16 +17,22 @@ import org.springframework.stereotype.Component;
 public class ImageProcessingListener {
 
     private final ProductService productService;
+    private final ScanResultCache scanResultCache;
 
     @RabbitListener(queues = "q.image.processing.responses")
     public void handleImageProcessingResponse(ImageProcessingResponse response) {
         log.info("Received processing response for objectKey: {}. Status: {}",
                 response.objectKey(), response.status());
 
+        if (response.id() != null && response.id().startsWith("temp_")) {
+            scanResultCache.put(response.id(), response);
+            return;
+        }
+
         if ("SUCCESS".equalsIgnoreCase(response.status())) {
             try {
                 productService.updateProductAdditives(
-                        response.id(),
+                        UUID.fromString(response.id()),
                         response.additives(),
                         response.parsedText()
                 );
@@ -38,17 +44,6 @@ public class ImageProcessingListener {
         } else {
             log.error("Error processing image {}: {}", response.objectKey(), response.errorMessage());
         }
-    }
-
-    private UUID extractProductId(String objectKey) {
-        Pattern pattern = Pattern.compile("([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})");
-        Matcher matcher = pattern.matcher(objectKey);
-
-        if (matcher.find()) {
-            return UUID.fromString(matcher.group(1));
-        }
-
-        throw new IllegalArgumentException("Cannot extract Product UUID from objectKey: " + objectKey);
     }
 
 }

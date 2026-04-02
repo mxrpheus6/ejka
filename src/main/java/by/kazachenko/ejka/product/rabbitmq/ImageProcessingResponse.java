@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 public record ImageProcessingResponse(
-        UUID id,
+        String id,
         String objectKey,
         String status,
         String parsedText,

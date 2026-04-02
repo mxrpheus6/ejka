@@ -2,7 +2,9 @@ package by.kazachenko.ejka.product.controller;
 
 import by.kazachenko.ejka.common.dto.response.PageResponse;
 import by.kazachenko.ejka.product.dto.request.ProductRequest;
+import by.kazachenko.ejka.product.dto.response.ProductAllResponse;
 import by.kazachenko.ejka.product.dto.response.ProductResponse;
+import by.kazachenko.ejka.product.dto.response.ProductScoreResponse;
 import by.kazachenko.ejka.product.model.enums.ProductImageType;
 import by.kazachenko.ejka.product.service.ProductService;
 
@@ -36,13 +38,13 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<PageResponse<ProductResponse>> getAllProducts(
+    public ResponseEntity<PageResponse<ProductAllResponse>> getAllProducts(
             @RequestParam(defaultValue = "0") @Min(0) Integer offset,
             @RequestParam(defaultValue = "10") @Min(1) @Max(20) Integer limit,
             @RequestParam(defaultValue = "createdAt") String sortBy,
             @RequestParam(defaultValue = "desc") String sortDirection
     ) {
-        PageResponse<ProductResponse> productsResponse = productService.getAllProducts(
+        PageResponse<ProductAllResponse> productsResponse = productService.getAllProducts(
                 offset,
                 limit,
                 sortBy,
@@ -118,4 +120,10 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{productId}/analysis")
+    public ResponseEntity<ProductScoreResponse> getProductScore(@PathVariable UUID productId) {
+        ProductScoreResponse response = productService.getProductAnalysis(productId);
+
+        return ResponseEntity.ok(response);
+    }
 }

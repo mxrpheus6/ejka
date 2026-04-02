@@ -1,6 +1,7 @@
 package by.kazachenko.ejka.product.mapper;
 
 import by.kazachenko.ejka.product.dto.request.ProductRequest;
+import by.kazachenko.ejka.product.dto.response.ProductAllResponse;
 import by.kazachenko.ejka.product.dto.response.ProductImageResponse;
 import by.kazachenko.ejka.product.dto.response.ProductResponse;
 import by.kazachenko.ejka.product.model.Product;
@@ -20,6 +21,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface ProductMapper {
 
     ProductResponse toResponse(Product product);
+    ProductAllResponse toAllResponse(Product product);
 
     Product toEntity(ProductRequest productRequest);
 

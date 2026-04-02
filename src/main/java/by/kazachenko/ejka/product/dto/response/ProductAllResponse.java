@@ -1,17 +1,13 @@
 package by.kazachenko.ejka.product.dto.response;
 
-import by.kazachenko.ejka.additive.dto.response.AdditiveResponse;
 import by.kazachenko.ejka.product.model.enums.ModerationStatus;
 import by.kazachenko.ejka.product.model.enums.ProductCategory;
 import by.kazachenko.ejka.product.model.enums.ProductRating;
-
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
-public record ProductResponse(
+public record ProductAllResponse(
         UUID id,
         String barcode,
         String title,
@@ -20,13 +16,11 @@ public record ProductResponse(
         ProductRating rating,
         BigDecimal userRating,
         Integer reviewsCount,
-        Instant createdAt,
         ModerationStatus moderationStatus,
         Integer calories,
         BigDecimal proteins,
         BigDecimal fats,
-        BigDecimal carbohydrates,
-        Set<AdditiveResponse> additives
+        BigDecimal carbohydrates
 ) {
 
 }

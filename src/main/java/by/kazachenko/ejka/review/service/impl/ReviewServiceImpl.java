@@ -11,6 +11,7 @@ import by.kazachenko.ejka.product.repository.ProductRepository;
 import by.kazachenko.ejka.review.dto.request.ReviewRequest;
 import by.kazachenko.ejka.review.dto.request.ReviewVoteRequest;
 import by.kazachenko.ejka.review.dto.response.ReviewResponse;
+import by.kazachenko.ejka.review.dto.response.UserReviewVoteResponse;
 import by.kazachenko.ejka.review.mapper.ReviewMapper;
 import by.kazachenko.ejka.review.model.Review;
 import by.kazachenko.ejka.review.model.ReviewVote;
@@ -20,6 +21,7 @@ import by.kazachenko.ejka.review.service.ReviewService;
 import by.kazachenko.ejka.user.model.User;
 import by.kazachenko.ejka.user.repository.UserRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -159,6 +161,13 @@ public class ReviewServiceImpl implements ReviewService {
 
             reviewVoteRepository.save(newVote);
         }
+    }
+
+    @Override
+    public List<UserReviewVoteResponse> getUserUpvotedReviewIds(UUID productId) {
+        UUID userId = securityUtils.getLoggedUserId();
+
+        return reviewVoteRepository.findUserVotesByProductId(userId, productId);
     }
 
 }

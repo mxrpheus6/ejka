@@ -2,7 +2,9 @@ package by.kazachenko.ejka.product.service;
 
 import by.kazachenko.ejka.common.dto.response.PageResponse;
 import by.kazachenko.ejka.product.dto.request.ProductRequest;
+import by.kazachenko.ejka.product.dto.response.ProductAllResponse;
 import by.kazachenko.ejka.product.dto.response.ProductResponse;
+import by.kazachenko.ejka.product.dto.response.ProductScoreResponse;
 import by.kazachenko.ejka.product.model.enums.ModerationStatus;
 import by.kazachenko.ejka.product.model.enums.ProductImageType;
 
@@ -14,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface ProductService {
 
-    PageResponse<ProductResponse> getAllProducts(Integer offset, Integer limit, String sortBy, String sortDirection);
+    PageResponse<ProductAllResponse> getAllProducts(Integer offset, Integer limit, String sortBy, String sortDirection);
 
     ProductResponse getProductById(UUID id);
 
@@ -35,5 +37,7 @@ public interface ProductService {
     void changeModerationStatus(UUID productId, ModerationStatus status);
 
     void updateProductAdditives(UUID productId, List<ParsedAdditive> parsedAdditives, String parsedText);
+
+    ProductScoreResponse getProductAnalysis(UUID productId);
 
 }
