@@ -2,7 +2,6 @@ package by.kazachenko.ejka.product.dto.response;
 
 import by.kazachenko.ejka.product.model.enums.ModerationStatus;
 import by.kazachenko.ejka.product.model.enums.ProductCategory;
-import by.kazachenko.ejka.product.model.enums.ProductRating;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
@@ -13,7 +12,7 @@ public record ProductAllResponse(
         String title,
         ProductCategory category,
         List<ProductImageResponse> images,
-        ProductRating rating,
+        Integer nutritionScore,
         BigDecimal userRating,
         Integer reviewsCount,
         ModerationStatus moderationStatus,

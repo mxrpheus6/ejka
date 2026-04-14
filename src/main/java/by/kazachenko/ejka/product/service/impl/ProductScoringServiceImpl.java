@@ -1,16 +1,16 @@
 package by.kazachenko.ejka.product.service.impl;
 
 import by.kazachenko.ejka.additive.model.Additive;
-import by.kazachenko.ejka.product.dto.response.ProductScoreResponse;
-import by.kazachenko.ejka.product.dto.response.ProductScoreResponse.AdditiveDetail;
-import by.kazachenko.ejka.product.dto.response.ProductScoreResponse.ImpactLevel;
-import by.kazachenko.ejka.product.dto.response.ProductScoreResponse.MacroDetail;
+import by.kazachenko.ejka.product.model.ProductScore;
+import by.kazachenko.ejka.product.model.ProductScore.AdditiveDetail;
+import by.kazachenko.ejka.product.model.ProductScore.ImpactLevel;
+import by.kazachenko.ejka.product.model.ProductScore.MacroDetail;
 import by.kazachenko.ejka.product.model.Product;
 import by.kazachenko.ejka.product.model.enums.ProductCategory;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,46 +19,42 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ProductScoringServiceImpl {
 
-    public ProductScoreResponse calculateScoreDetails(Product product) {
-        // Если категория не задана, используем общую логику
+    public ProductScore calculateScoreDetails(Product product) {
         ProductCategory category = product.getCategory() != null ? product.getCategory() : ProductCategory.GENERAL;
 
-        List<MacroDetail> macros = new ArrayList<>();
-
+        // 1. Оценка макронутриентов
         MacroDetail caloriesDetail = rateCalories(product.getCalories(), category);
-        MacroDetail proteinsDetail = rateProteins(product.getProteins(), category);
+        MacroDetail proteinsDetail = rateProteins(product.getProteins());
         MacroDetail fatsDetail = rateFats(product.getFats(), category);
         MacroDetail carbsDetail = rateCarbs(product.getCarbohydrates(), category);
 
-        macros.add(caloriesDetail);
-        macros.add(proteinsDetail);
-        macros.add(fatsDetail);
-        macros.add(carbsDetail);
+        List<MacroDetail> macros = List.of(caloriesDetail, proteinsDetail, fatsDetail, carbsDetail);
 
-        // 1. Взвешенный средний балл (Калории - 40%, Белки - 30%, Жиры - 15%, Углеводы - 15%)
-        double weightedScore = (caloriesDetail.getScore() * 0.40) +
+        // 2. Базовый нутриентный балл
+        double baseScore = (caloriesDetail.getScore() * 0.40) +
                 (proteinsDetail.getScore() * 0.30) +
                 (fatsDetail.getScore() * 0.15) +
                 (carbsDetail.getScore() * 0.15);
-        int baseScore = (int) Math.round(weightedScore);
 
-        // 2. Оцениваем добавки (твоя отличная логика оставлена без изменений)
-        List<AdditiveDetail> additiveDetails = new ArrayList<>();
+        // 3. Оценка добавок
         int additivesPenalty = 0;
-        int warningPenalty = 0;
-        boolean hasDangerous = false;
         boolean hasBanned = false;
+        boolean hasDangerous = false;
 
-        if (product.getAdditives() != null) {
+        List<AdditiveDetail> additiveDetails = List.of();
+        if (product.getAdditives() != null && !product.getAdditives().isEmpty()) {
+            additiveDetails = product.getAdditives().stream().map(additive ->
+                    AdditiveDetail.builder()
+                            .code(additive.getCode())
+                            .name(additive.getNameRu())
+                            .description(additive.getDescription())
+                            .warningDescription(additive.getWarningDescription())
+                            .dangerLevel(additive.getDangerLevel())
+                            .build()
+            ).collect(Collectors.toList());
+
+            int warningPenalty = 0;
             for (Additive additive : product.getAdditives()) {
-                additiveDetails.add(AdditiveDetail.builder()
-                        .code(additive.getCode())
-                        .name(additive.getNameRu())
-                        .description(additive.getDescription())
-                        .warningDescription(additive.getWarningDescription())
-                        .dangerLevel(additive.getDangerLevel())
-                        .build());
-
                 switch (additive.getDangerLevel()) {
                     case BANNED -> hasBanned = true;
                     case DANGEROUS -> {
@@ -69,13 +65,11 @@ public class ProductScoringServiceImpl {
                     case SAFE -> {}
                 }
             }
+            additivesPenalty += Math.min(warningPenalty, 20);
         }
 
-        if (warningPenalty > 20) warningPenalty = 20;
-        additivesPenalty += warningPenalty;
-
-        // 3. Высчитываем итоговый балл
-        int finalScore = baseScore - additivesPenalty;
+        // 4. Итоговый расчет
+        int finalScore = (int) Math.round(baseScore) - additivesPenalty;
 
         if (hasBanned) {
             finalScore = 0;
@@ -85,126 +79,112 @@ public class ProductScoringServiceImpl {
 
         finalScore = Math.max(0, Math.min(finalScore, 100));
 
-        return ProductScoreResponse.builder()
+        return ProductScore.builder()
                 .totalScore(finalScore)
                 .macros(macros)
                 .additives(additiveDetails)
                 .build();
     }
 
-    // --- Логика оценки макросов с учетом категорий ---
 
     private MacroDetail rateCalories(Integer calories, ProductCategory category) {
-        int cal = (calories != null) ? calories : 0;
+        double val = (calories != null) ? calories.doubleValue() : 0.0;
+        double[] thresholds;
         int score;
 
         switch (category) {
-            case FATS_AND_OILS, NUTS_AND_SEEDS -> score = 100; // Прощаем высокую калорийность
-            case BEVERAGES -> {
-                if (cal <= 20) score = 100;
-                else if (cal <= 40) score = 75;
-                else if (cal <= 60) score = 50;
-                else score = 25;
-            }
-            default -> { // GENERAL и остальные
-                if (cal <= 160) score = 100;
-                else if (cal <= 360) score = 75;
-                else if (cal <= 560) score = 50;
-                else score = 25;
-            }
+            case BEVERAGES -> thresholds = new double[]{20.0, 40.0, 60.0};
+            case FATS_AND_OILS, NUTS_AND_SEEDS, CEREALS_AND_LEGUMES -> thresholds = new double[]{400.0, 600.0, 800.0};
+            default -> thresholds = new double[]{160.0, 360.0, 560.0};
         }
 
-        return buildMacroDetail("Калорийность", cal + " ккал", score);
+        if (val <= thresholds[0]) score = 100;
+        else if (val <= thresholds[1]) score = 75;
+        else if (val <= thresholds[2]) score = 50;
+        else score = 25;
+
+        return buildMacroDetail("kcal", val, "ккал", score, thresholds, false);
     }
 
-    private MacroDetail rateProteins(BigDecimal proteins, ProductCategory category) {
-        double p = (proteins != null) ? proteins.doubleValue() : 0.0;
+    private MacroDetail rateProteins(BigDecimal proteins) {
+        double val = (proteins != null) ? proteins.doubleValue() : 0.0;
+        // Для белков шкала перевернута: [Отлично >= 8.0, Норма >= 0.1, Плохо < 0.1]
+        double[] thresholds = new double[]{8.0, 0.1, 0.0};
         int score;
 
-        switch (category) {
-            case MEAT_AND_FISH -> {
-                if (p >= 18.0) score = 100; // От мяса ждем много белка
-                else if (p >= 12.0) score = 75;
-                else if (p >= 8.0) score = 50;
-                else score = 25; // Накачали водой или соей
-            }
-            default -> {
-                if (p >= 12.0) score = 100;
-                else if (p >= 6.0) score = 75;
-                else if (p >= 3.0) score = 50;
-                else score = 25;
-            }
-        }
+        if (val >= thresholds[0]) score = 100;
+        else if (val >= thresholds[1]) score = 75;
+        else score = 50;
 
-        return buildMacroDetail("Белки", String.format("%.1f г", p), score);
+        return buildMacroDetail("proteins", val, "г", score, thresholds, true);
     }
 
     private MacroDetail rateFats(BigDecimal fats, ProductCategory category) {
-        double f = (fats != null) ? fats.doubleValue() : 0.0;
-        int score;
+        double val = (fats != null) ? fats.doubleValue() : 0.0;
+        double[] thresholds;
+        int score = -1;
 
         switch (category) {
-            case FATS_AND_OILS, NUTS_AND_SEEDS -> score = 100; // Это их суть, жиры здесь полезные
-            case BEVERAGES -> {
-                if (f <= 1.0) score = 100; // В напитках жиров быть почти не должно (кроме молока)
-                else if (f <= 3.0) score = 75;
-                else score = 25;
+            case FATS_AND_OILS -> {
+                thresholds = new double[]{100.0, 100.0, 100.0};
+                score = 100;
             }
-            default -> {
-                if (f <= 5.0) score = 100;
-                else if (f <= 15.0) score = 75;
-                else if (f <= 30.0) score = 50;
-                else score = 25;
-            }
+            case NUTS_AND_SEEDS -> thresholds = new double[]{60.0, 70.0, 80.0};
+            case BEVERAGES -> thresholds = new double[]{1.0, 3.0, 5.0};
+            case SNACKS_AND_SWEETS, SAUCES -> thresholds = new double[]{3.0, 10.0, 17.5};
+            default -> thresholds = new double[]{3.0, 17.5, 21.0};
         }
 
-        return buildMacroDetail("Жиры", String.format("%.1f г", f), score);
+        if (score == -1) {
+            if (val <= thresholds[0]) score = 100;
+            else if (val <= thresholds[1]) score = 75;
+            else if (val <= thresholds[2]) score = 50;
+            else score = 25;
+        }
+
+        return buildMacroDetail("fats", val, "г", score, thresholds, false);
     }
 
     private MacroDetail rateCarbs(BigDecimal carbs, ProductCategory category) {
-        double c = (carbs != null) ? carbs.doubleValue() : 0.0;
+        double val = (carbs != null) ? carbs.doubleValue() : 0.0;
+        double[] thresholds;
         int score;
 
         switch (category) {
-            case CEREALS_AND_LEGUMES -> {
-                if (c <= 75.0) score = 100; // Норма для круп
-                else if (c <= 85.0) score = 75;
-                else score = 50;
-            }
-            case BEVERAGES -> {
-                if (c <= 2.0) score = 100; // Вода или чай без сахара
-                else if (c <= 5.0) score = 75; // Легкий компот
-                else if (c <= 8.0) score = 50;
-                else score = 25; // Сладкие газировки и соки
-            }
-            case FATS_AND_OILS, MEAT_AND_FISH -> {
-                if (c <= 3.0) score = 100; // В мясе и масле углеводов быть не должно
-                else if (c <= 10.0) score = 50; // Панировка или маринад
-                else score = 25; // Много крахмала или сахара
-            }
-            default -> {
-                if (c <= 30.0) score = 100;
-                else if (c <= 55.0) score = 75;
-                else if (c <= 70.0) score = 50;
-                else score = 25;
-            }
+            case CEREALS_AND_LEGUMES -> thresholds = new double[]{75.0, 85.0, 100.0};
+            case MEAT_AND_FISH -> thresholds = new double[]{1.0, 5.0, 10.0};
+            case BEVERAGES -> thresholds = new double[]{2.0, 5.0, 8.0};
+            case DAIRY -> thresholds = new double[]{6.0, 10.0, 15.0};
+            case SNACKS_AND_SWEETS, SAUCES -> thresholds = new double[]{5.0, 15.0, 30.0};
+            default -> thresholds = new double[]{15.0, 30.0, 50.0};
         }
 
-        return buildMacroDetail("Углеводы", String.format("%.1f г", c), score);
+        if (val <= thresholds[0]) score = 100;
+        else if (val <= thresholds[1]) score = 75;
+        else if (val <= thresholds[2]) score = 50;
+        else score = 25;
+
+        return buildMacroDetail("carbs", val, "г", score, thresholds, false);
     }
 
-    // --- Утилитарный метод для сборки MacroDetail ---
-
-    private MacroDetail buildMacroDetail(String name, String value, int score) {
+    private MacroDetail buildMacroDetail(String name, double numericValue, String unit, int score, double[] thresholds, boolean higherBetter) {
         ImpactLevel impact;
-        if (score >= 100) impact = ImpactLevel.EXCELLENT;
-        else if (score >= 75) impact = ImpactLevel.GOOD;
-        else if (score >= 50) impact = ImpactLevel.POOR;
+        if (score == 100) impact = ImpactLevel.EXCELLENT;
+        else if (score == 75) impact = ImpactLevel.GOOD;
+        else if (score == 50) impact = ImpactLevel.POOR;
         else impact = ImpactLevel.BAD;
+
+        // Форматируем текст: для калорий целое число, для БЖУ - с одной запятой
+        String formattedValue = name.equals("kcal") ?
+                String.format("%d %s", (int) numericValue, unit) :
+                String.format("%.1f %s", numericValue, unit);
 
         return MacroDetail.builder()
                 .name(name)
-                .value(value)
+                .value(formattedValue)
+                .numericValue(numericValue)
+                .thresholds(List.of(thresholds[0], thresholds[1], thresholds[2]))
+                .higherBetter(higherBetter)
                 .score(score)
                 .impact(impact)
                 .build();

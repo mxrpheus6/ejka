@@ -22,6 +22,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -30,6 +31,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -41,6 +43,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(
@@ -90,6 +94,12 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductRating rating;
 
+    private Integer nutritionScore;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "score_details", columnDefinition = "jsonb")
+    private ProductScore scoreDetails;
+
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
 
@@ -122,8 +132,9 @@ public class Product {
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "additive_id")
     )
+    @OrderBy("code ASC")
     @Builder.Default
-    private Set<Additive> additives = new HashSet<>();
+    private Set<Additive> additives = new LinkedHashSet<>();
 
     @PrePersist
     public void prePersist() {

@@ -63,3 +63,4 @@ minio:
   secret-key: ${MINIO_ROOT_PASSWORD}
   buckets:
     products: ${MINIO_PRODUCTS_BUCKET_NAME}
+    avatars: ${MINIO_AVATARS_BUCKET_NAME}

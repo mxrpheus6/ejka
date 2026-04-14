@@ -3,6 +3,7 @@ package by.kazachenko.ejka.product.repository;
 import by.kazachenko.ejka.product.model.Product;
 import by.kazachenko.ejka.product.model.enums.ModerationStatus;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -51,5 +52,12 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
     @Transactional
     @Query("UPDATE Product p SET p.moderationStatus = :status WHERE p.id = :productId")
     int updateModerationStatus(UUID productId, ModerationStatus status);
+
+    @Query("""
+            SELECT p FROM Product p 
+            WHERE word_similarity(:searchQuery, REPLACE(COALESCE(p.title, ''), chr(173), '')) > 0.25
+            ORDER BY word_similarity(:searchQuery, REPLACE(COALESCE(p.title, ''), chr(173), '')) DESC
+            """)
+    Page<Product> searchByText(@Param("searchQuery") String searchQuery, Pageable pageable);
 
 }

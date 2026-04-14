@@ -4,7 +4,7 @@ import by.kazachenko.ejka.common.dto.response.PageResponse;
 import by.kazachenko.ejka.product.dto.request.ProductRequest;
 import by.kazachenko.ejka.product.dto.response.ProductAllResponse;
 import by.kazachenko.ejka.product.dto.response.ProductResponse;
-import by.kazachenko.ejka.product.dto.response.ProductScoreResponse;
+import by.kazachenko.ejka.product.model.ProductScore;
 import by.kazachenko.ejka.product.model.enums.ProductImageType;
 import by.kazachenko.ejka.product.service.ProductService;
 
@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 
+import jakarta.validation.constraints.NotBlank;
 import java.util.UUID;
 
 import lombok.RequiredArgsConstructor;
@@ -59,6 +60,21 @@ public class ProductController {
         ProductResponse productResponse = productService.getProductById(productId);
 
         return ResponseEntity.ok(productResponse);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<PageResponse<ProductAllResponse>> searchProducts(
+            @RequestParam @NotBlank String query,
+            @RequestParam(defaultValue = "0") @Min(0) Integer offset,
+            @RequestParam(defaultValue = "10") @Min(1) @Max(20) Integer limit
+    ) {
+        PageResponse<ProductAllResponse> productsResponse = productService.searchByTextWithRanking(
+                query,
+                offset,
+                limit
+        );
+
+        return ResponseEntity.ok(productsResponse);
     }
 
     @GetMapping(params = "barcode")
@@ -121,8 +137,8 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}/analysis")
-    public ResponseEntity<ProductScoreResponse> getProductScore(@PathVariable UUID productId) {
-        ProductScoreResponse response = productService.getProductAnalysis(productId);
+    public ResponseEntity<ProductScore> getProductScore(@PathVariable UUID productId) {
+        ProductScore response = productService.getProductAnalysis(productId);
 
         return ResponseEntity.ok(response);
     }

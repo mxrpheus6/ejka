@@ -9,7 +9,7 @@ import by.kazachenko.ejka.common.security.SecurityUtils;
 import by.kazachenko.ejka.product.dto.request.ProductRequest;
 import by.kazachenko.ejka.product.dto.response.ProductAllResponse;
 import by.kazachenko.ejka.product.dto.response.ProductResponse;
-import by.kazachenko.ejka.product.dto.response.ProductScoreResponse;
+import by.kazachenko.ejka.product.model.ProductScore;
 import by.kazachenko.ejka.product.mapper.ProductMapper;
 import by.kazachenko.ejka.product.model.Product;
 import by.kazachenko.ejka.product.model.enums.ModerationStatus;
@@ -205,19 +205,41 @@ public class ProductServiceImpl implements ProductService {
                 productRepository.batchInsertAdditives(productId, additiveIdsArray);
             }
         }
+
+        calculateAndSaveScore(product);
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public ProductScoreResponse getProductAnalysis(UUID productId) {
+    @Transactional
+    public ProductScore getProductAnalysis(UUID productId) {
         // Достаем продукт из базы.
         // ВАЖНО: Если additives лежат как Lazy, убедись, что они подтянутся,
         // например через @EntityGraph в репозитории, чтобы не словить N+1
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(ExceptionMessages.PRODUCT_NOT_FOUND));
 
-        // Отдаем сущность в калькулятор и возвращаем готовый DTO
+        calculateAndSaveScore(product);
         return productScoringService.calculateScoreDetails(product);
+    }
+
+    private void calculateAndSaveScore(Product product) {
+        ProductScore scoreDetails = productScoringService.calculateScoreDetails(product);
+
+        product.setNutritionScore(scoreDetails.getTotalScore());
+        product.setScoreDetails(scoreDetails);
+
+        productRepository.save(product);
+    }
+
+    @Override
+    public PageResponse<ProductAllResponse> searchByTextWithRanking(String query, Integer offset, Integer limit) {
+        Pageable pageable = PageRequest.of(offset, limit);
+
+        Page<ProductAllResponse> responsePage = productRepository
+                .searchByText(query, pageable)
+                .map(productMapper::toAllResponse);
+
+        return pageResponseMapper.toResponse(responsePage);
     }
 
 }

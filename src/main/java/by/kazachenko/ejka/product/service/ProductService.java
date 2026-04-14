@@ -4,7 +4,7 @@ import by.kazachenko.ejka.common.dto.response.PageResponse;
 import by.kazachenko.ejka.product.dto.request.ProductRequest;
 import by.kazachenko.ejka.product.dto.response.ProductAllResponse;
 import by.kazachenko.ejka.product.dto.response.ProductResponse;
-import by.kazachenko.ejka.product.dto.response.ProductScoreResponse;
+import by.kazachenko.ejka.product.model.ProductScore;
 import by.kazachenko.ejka.product.model.enums.ModerationStatus;
 import by.kazachenko.ejka.product.model.enums.ProductImageType;
 
@@ -38,6 +38,8 @@ public interface ProductService {
 
     void updateProductAdditives(UUID productId, List<ParsedAdditive> parsedAdditives, String parsedText);
 
-    ProductScoreResponse getProductAnalysis(UUID productId);
+    ProductScore getProductAnalysis(UUID productId);
+
+    PageResponse<ProductAllResponse> searchByTextWithRanking(String query, Integer offset, Integer limit);
 
 }

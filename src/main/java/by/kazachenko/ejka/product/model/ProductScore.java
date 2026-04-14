@@ -1,18 +1,24 @@
-package by.kazachenko.ejka.product.dto.response;
+package by.kazachenko.ejka.product.model;
 
-import java.util.List;
+import by.kazachenko.ejka.additive.model.enums.DangerLevel;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductScoreResponse {
+public class ProductScore {
+    private int totalScore;
     private List<MacroDetail> macros;
+    private List<AdditiveDetail> additives;
 
     @Data
     @Builder
@@ -28,6 +34,18 @@ public class ProductScoreResponse {
 
         private int score;
         private ImpactLevel impact;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AdditiveDetail {
+        private String code;
+        private String name;
+        private DangerLevel dangerLevel;
+        private String description;
+        private String warningDescription;
     }
 
     public enum ImpactLevel {

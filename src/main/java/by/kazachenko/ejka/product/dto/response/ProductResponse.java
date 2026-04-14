@@ -3,7 +3,6 @@ package by.kazachenko.ejka.product.dto.response;
 import by.kazachenko.ejka.additive.dto.response.AdditiveResponse;
 import by.kazachenko.ejka.product.model.enums.ModerationStatus;
 import by.kazachenko.ejka.product.model.enums.ProductCategory;
-import by.kazachenko.ejka.product.model.enums.ProductRating;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -17,7 +16,8 @@ public record ProductResponse(
         String title,
         ProductCategory category,
         List<ProductImageResponse> images,
-        ProductRating rating,
+        Integer nutritionScore,
+        ProductScoreResponse scoreDetails,
         BigDecimal userRating,
         Integer reviewsCount,
         Instant createdAt,

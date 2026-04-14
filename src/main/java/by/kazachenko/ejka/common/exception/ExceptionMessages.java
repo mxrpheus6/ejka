@@ -10,7 +10,7 @@ public final class ExceptionMessages {
 
 
     public static final String USER_NOT_FOUND = "Пользователь не найден";
-    public static final String USER_USERNAME_ALREADY_EXISTS  = "Пользователь с таким именем уже существует";
+    public static final String USER_USERNAME_ALREADY_EXISTS  = "Пользователь с таким username уже существует";
     public static final String USER_EMAIL_ALREADY_EXISTS  = "Пользователь с таким email уже существует";
 
 

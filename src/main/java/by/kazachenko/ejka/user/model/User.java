@@ -11,6 +11,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
@@ -35,6 +37,12 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
+    @Column(nullable = false)
+    private String name;
+
+    @Column
+    private String avatarKey;
+
     @Column(nullable = false, unique = true)
     private String email;
 
@@ -49,8 +57,18 @@ public class User {
     @Column(nullable = false)
     private Integer tokenVersion = 0;
 
+    @Column(nullable = false)
+    private LocalDate birthDate;
+
+    @Builder.Default
+    @Column
+    private Instant registrationDate = Instant.now();
+
     @Builder.Default
     @Column(nullable = false)
     private Boolean isBanned = false;
+
+    @Column
+    private String banReason;
 
 }
