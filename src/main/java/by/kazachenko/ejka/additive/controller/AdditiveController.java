@@ -3,6 +3,7 @@ package by.kazachenko.ejka.additive.controller;
 import by.kazachenko.ejka.additive.dto.request.AdditiveRequest;
 import by.kazachenko.ejka.additive.dto.response.AdditiveResponse;
 import by.kazachenko.ejka.additive.dto.response.WorkerAdditiveResponse;
+import by.kazachenko.ejka.additive.model.enums.DangerLevel;
 import by.kazachenko.ejka.additive.service.AdditiveService;
 import by.kazachenko.ejka.common.dto.response.PageResponse;
 
@@ -49,12 +50,18 @@ public class AdditiveController {
 
     @GetMapping
     public ResponseEntity<PageResponse<AdditiveResponse>> getAllAdditives(
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) DangerLevel dangerLevel,
+            @RequestParam(required = false) List<String> origin,
             @RequestParam(defaultValue = "0") @Min(0) Integer offset,
             @RequestParam(defaultValue = "10") @Min(1) @Max(20) Integer limit,
             @RequestParam(defaultValue = "code") String sortBy,
             @RequestParam(defaultValue = "asc") String sortDirection
     ) {
-        PageResponse<AdditiveResponse> additivesResponse = additiveService.getAllAdditives(
+        PageResponse<AdditiveResponse> additivesResponse = additiveService.getFilteredAdditives(
+                category,
+                dangerLevel,
+                origin,
                 offset,
                 limit,
                 sortBy,

@@ -7,6 +7,7 @@ import by.kazachenko.ejka.user.model.User;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
@@ -17,7 +18,8 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 )
 public interface UserMapper {
 
-    UserResponse toResponse(User user);
+    @Mapping(target = "scansCount", source = "scansCount")
+    UserResponse toResponse(User user, int scansCount);
 
     User toEntity(UserRequest userRequest);
 

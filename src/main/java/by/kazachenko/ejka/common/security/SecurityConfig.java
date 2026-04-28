@@ -46,6 +46,10 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/v1/additives/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/v1/origins/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/v1/scans/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/allergen-triggers/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/v1/subscriptions/webhook").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/subscriptions/plan").permitAll()
+                                .requestMatchers("/api/v1/subscriptions/**").authenticated()
                                 .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint((request, response, authException) -> {

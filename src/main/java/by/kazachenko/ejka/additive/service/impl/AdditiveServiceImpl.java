@@ -6,9 +6,11 @@ import by.kazachenko.ejka.additive.dto.response.WorkerAdditiveResponse;
 import by.kazachenko.ejka.additive.mapper.AdditiveMapper;
 import by.kazachenko.ejka.additive.model.Additive;
 import by.kazachenko.ejka.additive.model.Origin;
+import by.kazachenko.ejka.additive.model.enums.DangerLevel;
 import by.kazachenko.ejka.additive.repository.AdditiveRepository;
 import by.kazachenko.ejka.additive.service.AdditiveService;
 import by.kazachenko.ejka.additive.service.OriginService;
+import by.kazachenko.ejka.additive.specification.AdditiveSpecifications;
 import by.kazachenko.ejka.common.dto.response.PageResponse;
 import by.kazachenko.ejka.common.exception.cutom.AdditiveAlreadyExistsException;
 import by.kazachenko.ejka.common.exception.cutom.AdditiveNotFoundException;
@@ -23,6 +25,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,6 +84,33 @@ public class AdditiveServiceImpl implements AdditiveService {
                 .stream()
                 .map(additiveMapper::toWorkerResponse)
                 .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PageResponse<AdditiveResponse> getFilteredAdditives(
+            String category,
+            DangerLevel dangerLevel,
+            List<String> originTypes,
+            Integer offset,
+            Integer limit,
+            String sortBy,
+            String sortDirection)
+    {
+
+        Sort.Direction direction = Sort.Direction.fromString(sortDirection);
+        Pageable pageable = PageRequest.of(offset, limit, Sort.by(direction, sortBy));
+
+        Specification<Additive> spec = Specification.where(AdditiveSpecifications.hasCategory(category))
+                .and(AdditiveSpecifications.hasDangerLevel(dangerLevel))
+                .and(AdditiveSpecifications.hasOrigins(originTypes));
+
+        Page<AdditiveResponse> responsePage = additiveRepository
+                .findAll(spec, pageable)
+                .map(additiveMapper::toResponse);
+
+
+        return pageResponseMapper.toResponse(responsePage);
     }
 
     @Override

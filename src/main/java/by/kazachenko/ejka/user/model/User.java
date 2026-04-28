@@ -65,6 +65,18 @@ public class User {
     private Instant registrationDate = Instant.now();
 
     @Builder.Default
+    private Boolean isPremium = false;
+
+    @Column
+    private LocalDate premiumUntil;
+
+    @Builder.Default
+    private Boolean cancelAtPeriodEnd = false;
+
+    @Column
+    private String stripeCustomerId;
+
+    @Builder.Default
     @Column(nullable = false)
     private Boolean isBanned = false;
 

@@ -4,6 +4,7 @@ import by.kazachenko.ejka.common.exception.ExceptionMessages;
 import by.kazachenko.ejka.common.exception.cutom.UserNotFoundException;
 import by.kazachenko.ejka.common.security.SecurityUtils;
 import by.kazachenko.ejka.common.service.impl.MinioServiceImpl;
+import by.kazachenko.ejka.common.utils.RedisKeyUtils;
 import by.kazachenko.ejka.user.dto.request.UserRequest;
 import by.kazachenko.ejka.user.dto.response.UserResponse;
 import by.kazachenko.ejka.user.mapper.UserMapper;
@@ -16,6 +17,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,6 +32,8 @@ public class UserServiceImpl implements UserService {
     private final SecurityUtils securityUtils;
     private final MinioServiceImpl minioService;
 
+    private final StringRedisTemplate redisTemplate;
+
     @Value("${minio.buckets.avatars}")
     private String avatarsBucketName;
 
@@ -41,7 +45,12 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(loggedUserId)
                 .orElseThrow(() -> new UserNotFoundException(ExceptionMessages.USER_NOT_FOUND));
 
-        return userMapper.toResponse(user);
+        String redisKey = RedisKeyUtils.getUserScansKey(loggedUserId);
+
+        String scansStr = redisTemplate.opsForValue().get(redisKey);
+        int currentScans = (scansStr != null) ? Integer.parseInt(scansStr) : 0;
+
+        return userMapper.toResponse(user, currentScans);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package by.kazachenko.ejka.product.service.impl;
 
+import by.kazachenko.ejka.additive.model.enums.AllergenCategory;
 import by.kazachenko.ejka.common.dto.response.PageResponse;
 import by.kazachenko.ejka.common.exception.ExceptionMessages;
 import by.kazachenko.ejka.common.exception.cutom.ProductAlreadyExistsException;
@@ -13,16 +14,20 @@ import by.kazachenko.ejka.product.model.ProductScore;
 import by.kazachenko.ejka.product.mapper.ProductMapper;
 import by.kazachenko.ejka.product.model.Product;
 import by.kazachenko.ejka.product.model.enums.ModerationStatus;
+import by.kazachenko.ejka.product.model.enums.ProductCategory;
 import by.kazachenko.ejka.product.model.enums.ProductImageType;
 import by.kazachenko.ejka.product.rabbitmq.ParsedAdditive;
 import by.kazachenko.ejka.product.repository.ProductRepository;
 import by.kazachenko.ejka.product.service.ProductImageService;
 import by.kazachenko.ejka.product.service.ProductService;
+import by.kazachenko.ejka.product.specification.ProductSpecifications;
 import by.kazachenko.ejka.user.model.User;
 import by.kazachenko.ejka.user.model.enums.Role;
 import by.kazachenko.ejka.user.repository.UserRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import lombok.RequiredArgsConstructor;
@@ -31,6 +36,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -187,11 +193,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void updateProductAdditives(UUID productId, List<ParsedAdditive> parsedAdditives, String parsedText) {
+    public void updateProductAnalysis(
+            UUID productId,
+            List<ParsedAdditive> parsedAdditives,
+            Set<AllergenCategory> allergens,
+            Boolean hasPalmOil, String parsedText
+    ) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(ExceptionMessages.PRODUCT_NOT_FOUND));
 
         product.setCompositionText(parsedText);
+        product.setAllergens(allergens);
+        product.setHasPalmOil(hasPalmOil);
 
         productRepository.deleteAdditivesByProductId(productId);
 
@@ -237,6 +250,48 @@ public class ProductServiceImpl implements ProductService {
 
         Page<ProductAllResponse> responsePage = productRepository
                 .searchByText(query, pageable)
+                .map(productMapper::toAllResponse);
+
+        return pageResponseMapper.toResponse(responsePage);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PageResponse<ProductAllResponse> getFilteredProducts(
+            String searchQuery,
+            String barcode,
+            ProductCategory category,
+            ModerationStatus status,
+            Integer minCalories,
+            Integer maxCalories,
+            BigDecimal minUserRating,
+            List<UUID> additiveIds,
+            Integer offset,
+            Integer limit,
+            String sortBy,
+            String sortDirection)
+    {
+        Sort.Direction direction = Sort.Direction.fromString(sortDirection);
+        Pageable pageable = PageRequest.of(offset, limit, Sort.by(direction, sortBy));
+
+        String actualBarcode = barcode;
+        String actualSearchQuery = searchQuery;
+
+        if (searchQuery != null && searchQuery.trim().matches("\\d{8,14}")) {
+            actualBarcode = searchQuery.trim();
+            actualSearchQuery = null;
+        }
+
+        Specification<Product> spec = Specification.where(ProductSpecifications.hasModerationStatus(status))
+                .and(ProductSpecifications.hasBarcode(actualBarcode))
+                .and(ProductSpecifications.titleSimilarTo(actualSearchQuery, 0.25))
+                .and(ProductSpecifications.hasCategory(category))
+                .and(ProductSpecifications.caloriesBetween(minCalories, maxCalories))
+                .and(ProductSpecifications.minUserRating(minUserRating))
+                .and(ProductSpecifications.containsAdditives(additiveIds));
+
+        Page<ProductAllResponse> responsePage = productRepository
+                .findAll(spec, pageable)
                 .map(productMapper::toAllResponse);
 
         return pageResponseMapper.toResponse(responsePage);

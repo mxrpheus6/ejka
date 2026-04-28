@@ -1,14 +1,16 @@
 package by.kazachenko.ejka.product.model;
 
 import by.kazachenko.ejka.additive.model.Additive;
+import by.kazachenko.ejka.additive.model.enums.AllergenCategory;
 import by.kazachenko.ejka.product.model.enums.ModerationStatus;
 import by.kazachenko.ejka.product.model.enums.ProductCategory;
-import by.kazachenko.ejka.product.model.enums.ProductRating;
 import by.kazachenko.ejka.review.model.Review;
 import by.kazachenko.ejka.user.model.User;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -91,9 +93,6 @@ public class Product {
     @Builder.Default
     private ModerationStatus moderationStatus = ModerationStatus.PENDING;
 
-    @Enumerated(EnumType.STRING)
-    private ProductRating rating;
-
     private Integer nutritionScore;
 
     @JdbcTypeCode(SqlTypes.JSON)
@@ -136,48 +135,17 @@ public class Product {
     @Builder.Default
     private Set<Additive> additives = new LinkedHashSet<>();
 
-    @PrePersist
-    public void prePersist() {
-        this.rating = calculateSimplifiedRating(calories, proteins, fats, carbohydrates);
-        this.createdAt = Instant.now();
-    }
+    @ElementCollection(targetClass = AllergenCategory.class, fetch = FetchType.LAZY)
+    @CollectionTable(
+            name = "product_allergens",
+            joinColumns = @JoinColumn(name = "product_id")
+    )
+    @Enumerated(EnumType.STRING)
+    @Column(name = "allergen")
+    @Builder.Default
+    private Set<AllergenCategory> allergens = new HashSet<>();
 
-    @PreUpdate
-    public void preUpdate() {
-        this.rating = calculateSimplifiedRating(calories, proteins, fats, carbohydrates);
-    }
-
-    private ProductRating calculateSimplifiedRating(Integer calories, BigDecimal proteins, BigDecimal fats, BigDecimal carbohydrates) {
-        int energyPoints = getPoints(calories, 335);
-        int fatPoints = getPoints(fats, 10);
-        int carbPoints = getPoints(carbohydrates, 13);
-
-        int negativeScore = energyPoints + fatPoints + carbPoints;
-
-        int proteinPoints = getPoints(proteins, 1.6);
-
-        if (proteinPoints > 5) {
-            proteinPoints = 5;
-        }
-
-        int finalScore = negativeScore - proteinPoints;
-
-        return mapScoreToGrade(finalScore);
-    }
-
-    private int getPoints(Number value, double step) {
-        if (value == null) return 0;
-        double val = value.doubleValue();
-        int points = (int) (val / step);
-        return Math.min(points, 10);
-    }
-
-    private ProductRating mapScoreToGrade(int score) {
-        if (score <= -1) return ProductRating.A;  // Very healthy (Water, simple veggies)
-        if (score <= 3)  return ProductRating.B;  // Healthy (Lean meat, complex meals)
-        if (score <= 11) return ProductRating.C;  // Moderate (Standard meals)
-        if (score <= 16) return ProductRating.D;  // Poor (Fatty/Sugary snacks)
-        return ProductRating.E;                   // Unhealthy (Candy, pure fat, fried)
-    }
+    @Column(name = "has_palm_oil")
+    private Boolean hasPalmOil;
 
 }

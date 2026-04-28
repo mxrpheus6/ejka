@@ -1,10 +1,13 @@
 package by.kazachenko.ejka.product.rabbitmq;
 
+import by.kazachenko.ejka.additive.model.enums.AllergenCategory;
 import by.kazachenko.ejka.product.cache.ScanResultCache;
 import by.kazachenko.ejka.product.service.ProductService;
 
+import java.util.Set;
 import java.util.UUID;
 
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,9 +34,26 @@ public class ImageProcessingListener {
 
         if ("SUCCESS".equalsIgnoreCase(response.status())) {
             try {
-                productService.updateProductAdditives(
+
+                Set<AllergenCategory> detectedAllergens = response.allergens().stream()
+                        .map(match -> {
+                            try {
+                                return AllergenCategory.valueOf(match.category());
+                            } catch (IllegalArgumentException e) {
+                                log.warn("Unknown allergen category: {}", match.category());
+                                return null;
+                            }
+                        })
+                        .filter(java.util.Objects::nonNull)
+                        .collect(Collectors.toSet());
+
+                Boolean hasPalmOil = !response.controversial().isEmpty();
+
+                productService.updateProductAnalysis(
                         UUID.fromString(response.id()),
                         response.additives(),
+                        detectedAllergens,
+                        hasPalmOil,
                         response.parsedText()
                 );
 

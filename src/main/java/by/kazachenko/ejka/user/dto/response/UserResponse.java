@@ -18,7 +18,11 @@ public record UserResponse(
         Instant registrationDate,
         Boolean isBanned,
         @JsonInclude(JsonInclude.Include.NON_NULL)
-        String banReason
+        String banReason,
+        Integer scansCount,
+        Boolean isPremium,
+        LocalDate premiumUntil,
+        Boolean cancelAtPeriodEnd
 ) {
 
 }

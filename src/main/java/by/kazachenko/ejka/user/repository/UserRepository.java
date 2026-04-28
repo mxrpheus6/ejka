@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface UserRepository extends JpaRepository<User, UUID> {
 
     Optional<User> findByEmail(String email);
+    Optional<User> findByStripeCustomerId(String stripeCustomerId);
 
     boolean existsByEmail(String email);
 
@@ -22,5 +23,4 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     @Transactional
     @Query("UPDATE User u SET u.tokenVersion = u.tokenVersion + 1 WHERE u.email = :email")
     void incrementTokenVersion(String email);
-
 }

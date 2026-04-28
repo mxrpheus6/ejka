@@ -1,7 +1,6 @@
 package by.kazachenko.ejka.product.rabbitmq;
 
 import java.util.List;
-import java.util.UUID;
 
 public record ImageProcessingResponse(
         String id,
@@ -9,5 +8,7 @@ public record ImageProcessingResponse(
         String status,
         String parsedText,
         List<ParsedAdditive> additives,
+        List<ParsedAllergen> allergens,
+        List<ParsedControversial> controversial,
         String errorMessage
 ) {}

@@ -1,5 +1,6 @@
 package by.kazachenko.ejka.product.service.impl;
 
+import by.kazachenko.ejka.common.security.SecurityUtils;
 import by.kazachenko.ejka.common.service.impl.MinioServiceImpl;
 import by.kazachenko.ejka.product.cache.ScanResultCache;
 import by.kazachenko.ejka.product.rabbitmq.ImageProcessingEvent;
@@ -19,13 +20,16 @@ public class QuickScanServiceImpl {
     private final MinioServiceImpl minioService;
     private final ImagePublisher imagePublisher;
     private final ScanResultCache scanResultCache;
+    private final ScanPermissionService scanPermissionService;
 
     @Value("${minio.buckets.products}")
     private String productsBucketName;
 
     public String initiateScan(MultipartFile file) {
+        scanPermissionService.checkAndRecordScan();
+
         String objectKey = minioService.uploadFile(file, productsBucketName);
-        String scanId = "temp_" + UUID.randomUUID().toString();
+        String scanId = "temp_" + UUID.randomUUID();
 
         ImageProcessingEvent event = new ImageProcessingEvent(scanId, objectKey);
         imagePublisher.sendImageToQueue(event);

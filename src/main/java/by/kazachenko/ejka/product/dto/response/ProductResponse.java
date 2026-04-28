@@ -1,6 +1,7 @@
 package by.kazachenko.ejka.product.dto.response;
 
 import by.kazachenko.ejka.additive.dto.response.AdditiveResponse;
+import by.kazachenko.ejka.additive.model.enums.AllergenCategory;
 import by.kazachenko.ejka.product.model.enums.ModerationStatus;
 import by.kazachenko.ejka.product.model.enums.ProductCategory;
 
@@ -26,7 +27,9 @@ public record ProductResponse(
         BigDecimal proteins,
         BigDecimal fats,
         BigDecimal carbohydrates,
-        Set<AdditiveResponse> additives
+        Set<AdditiveResponse> additives,
+        Set<AllergenCategory> allergens,
+        Boolean hasPalmOil
 ) {
 
 }
