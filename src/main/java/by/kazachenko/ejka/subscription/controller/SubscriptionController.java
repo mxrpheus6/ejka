@@ -1,5 +1,7 @@
 package by.kazachenko.ejka.subscription.controller;
 
+import by.kazachenko.ejka.common.exception.ExceptionMessages;
+import by.kazachenko.ejka.common.exception.cutom.UserNotFoundException;
 import by.kazachenko.ejka.common.security.CustomUserDetails;
 import by.kazachenko.ejka.subscription.dto.response.PlanResponse;
 import by.kazachenko.ejka.subscription.service.StripeService;
@@ -41,7 +43,7 @@ public class SubscriptionController {
             PlanResponse plan = stripeService.getPlanDetails();
             return ResponseEntity.ok(plan);
         } catch (Exception e) {
-            log.error("💥 Ошибка при получении данных о тарифе из Stripe: ", e);
+            log.error("Ошибка при получении данных о тарифе из Stripe: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -50,7 +52,7 @@ public class SubscriptionController {
     public ResponseEntity<Map<String, String>> createCheckoutSession(@AuthenticationPrincipal CustomUserDetails currentUser) {
         try {
             User user = userRepository.findById(UUID.fromString(currentUser.getId()))
-                    .orElseThrow(() -> new RuntimeException("User not found"));
+                    .orElseThrow(() -> new UserNotFoundException(ExceptionMessages.USER_NOT_FOUND));
 
             String sessionUrl = stripeService.createCheckoutSession(
                     user.getId(),
@@ -94,7 +96,7 @@ public class SubscriptionController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid signature");
         }
 
-        log.info("📦 Stripe Event: {}", event.getType());
+        log.info("Stripe Event: {}", event.getType());
 
         switch (event.getType()) {
             case "checkout.session.completed":
@@ -124,7 +126,7 @@ public class SubscriptionController {
             user.setPremiumUntil(LocalDate.now().plusDays(30));
             userRepository.save(user);
 
-            log.info("🎉 Premium активирован для: {}", user.getEmail());
+            log.info("Premium активирован для: {}", user.getEmail());
         } catch (Exception e) {
             log.error("Ошибка обновления пользователя (checkout completed): ", e);
         }
@@ -143,7 +145,7 @@ public class SubscriptionController {
                 user.setPremiumUntil(null);
                 userRepository.save(user);
 
-                log.info("🚫 Подписка полностью удалена для: {}", user.getEmail());
+                log.info("Подписка полностью удалена для: {}", user.getEmail());
             }
         } catch (Exception e) {
             log.error("Ошибка обновления пользователя (subscription deleted): ", e);

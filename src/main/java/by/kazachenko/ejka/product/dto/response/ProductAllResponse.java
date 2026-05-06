@@ -3,6 +3,7 @@ package by.kazachenko.ejka.product.dto.response;
 import by.kazachenko.ejka.product.model.enums.ModerationStatus;
 import by.kazachenko.ejka.product.model.enums.ProductCategory;
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,7 +20,8 @@ public record ProductAllResponse(
         Integer calories,
         BigDecimal proteins,
         BigDecimal fats,
-        BigDecimal carbohydrates
+        BigDecimal carbohydrates,
+        Instant createdAt
 ) {
 
 }

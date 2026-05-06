@@ -49,7 +49,7 @@ public class MinioClientConfig {
                     );
                 }
             } catch (Exception e) {
-                throw new RuntimeException("Failed to initialize Minio bucket: " + bucket, e); //TODO
+                throw new RuntimeException("Failed to initialize Minio bucket: " + bucket, e);
             }
         }
     }

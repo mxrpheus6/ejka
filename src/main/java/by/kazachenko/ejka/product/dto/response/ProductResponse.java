@@ -15,6 +15,7 @@ public record ProductResponse(
         UUID id,
         String barcode,
         String title,
+        String compositionText,
         ProductCategory category,
         List<ProductImageResponse> images,
         Integer nutritionScore,
@@ -29,7 +30,8 @@ public record ProductResponse(
         BigDecimal carbohydrates,
         Set<AdditiveResponse> additives,
         Set<AllergenCategory> allergens,
-        Boolean hasPalmOil
+        Boolean hasPalmOil,
+        String authorUsername
 ) {
 
 }

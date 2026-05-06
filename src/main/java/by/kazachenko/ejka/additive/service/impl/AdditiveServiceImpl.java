@@ -59,6 +59,15 @@ public class AdditiveServiceImpl implements AdditiveService {
     }
 
     @Override
+    public List<AdditiveResponse> getAdditivesByIds(List<Long> ids) {
+        return additiveRepository
+                .findAllById(ids)
+                .stream()
+                .map(additiveMapper::toResponse)
+                .toList();
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public PageResponse<AdditiveResponse> getAllAdditives(
             Integer offset,
@@ -89,6 +98,7 @@ public class AdditiveServiceImpl implements AdditiveService {
     @Override
     @Transactional(readOnly = true)
     public PageResponse<AdditiveResponse> getFilteredAdditives(
+            String searchQuery,
             String category,
             DangerLevel dangerLevel,
             List<String> originTypes,
@@ -102,6 +112,7 @@ public class AdditiveServiceImpl implements AdditiveService {
         Pageable pageable = PageRequest.of(offset, limit, Sort.by(direction, sortBy));
 
         Specification<Additive> spec = Specification.where(AdditiveSpecifications.hasCategory(category))
+                .and(AdditiveSpecifications.textSimilarTo(searchQuery, 0.25))
                 .and(AdditiveSpecifications.hasDangerLevel(dangerLevel))
                 .and(AdditiveSpecifications.hasOrigins(originTypes));
 

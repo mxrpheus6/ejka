@@ -2,8 +2,6 @@ package by.kazachenko.ejka.product.model;
 
 import by.kazachenko.ejka.additive.model.enums.DangerLevel;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

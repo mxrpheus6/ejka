@@ -10,6 +10,7 @@ import by.kazachenko.ejka.product.model.ProductImage;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
@@ -20,6 +21,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 )
 public interface ProductMapper {
 
+    @Mapping(source = "creator.username", target = "authorUsername")
     ProductResponse toResponse(Product product);
     ProductAllResponse toAllResponse(Product product);
 

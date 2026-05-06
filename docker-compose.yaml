@@ -92,6 +92,33 @@ services:
     networks:
       - ejka-network
     restart: unless-stopped
+
+  frontend:
+    image: node:22-alpine
+    container_name: ejka_frontend
+    working_dir: /app
+    volumes:
+      - ../ejka-frontend:/app
+      - /app/node_modules
+    command: sh -c "npm install && npm run dev"
+    ports:
+      - "5173:5173"
+    networks:
+      - ejka-network
+    depends_on:
+      - app
+    restart: unless-stopped
+
+  stripe-cli:
+    image: stripe/stripe-cli:v1.40.8
+    container_name: ejka_stripe_cli
+    command: listen --api-key ${STRIPE_SECRET_KEY} --forward-to app:7000/api/v1/subscriptions/webhook
+    networks:
+      - ejka-network
+    depends_on:
+      - app
+    restart: unless-stopped
+
 volumes:
   postgres_data:
   redis_data:

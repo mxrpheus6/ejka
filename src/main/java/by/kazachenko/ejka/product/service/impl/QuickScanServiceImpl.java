@@ -1,6 +1,5 @@
 package by.kazachenko.ejka.product.service.impl;
 
-import by.kazachenko.ejka.common.security.SecurityUtils;
 import by.kazachenko.ejka.common.service.impl.MinioServiceImpl;
 import by.kazachenko.ejka.product.cache.ScanResultCache;
 import by.kazachenko.ejka.product.rabbitmq.ImageProcessingEvent;

@@ -1,7 +1,6 @@
 package by.kazachenko.ejka.common.security;
 
 import by.kazachenko.ejka.user.model.enums.Role;
-import by.kazachenko.ejka.user.repository.UserRepository;
 
 import java.util.UUID;
 
@@ -17,12 +16,20 @@ public class SecurityUtils {
     
     public UUID getLoggedUserId() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getPrincipal())) {
+            return null;
+        }
         CustomUserDetails principal = (CustomUserDetails) auth.getPrincipal();
         return UUID.fromString(principal.getId());
     }
 
     public Role getLoggedUserRole() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getPrincipal())) {
+            return null;
+        }
+
         CustomUserDetails principal = (CustomUserDetails) auth.getPrincipal();
         return principal.getRole();
     }

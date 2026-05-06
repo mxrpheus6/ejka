@@ -2,7 +2,6 @@ package by.kazachenko.ejka.user.service.impl;
 
 import by.kazachenko.ejka.common.security.CustomUserDetails;
 import by.kazachenko.ejka.user.model.User;
-import by.kazachenko.ejka.user.repository.UserRepository;
 import by.kazachenko.ejka.user.service.JwtService;
 
 import io.jsonwebtoken.Claims;

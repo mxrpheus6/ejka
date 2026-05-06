@@ -61,4 +61,8 @@ public interface ProductRepository extends JpaRepository<Product, UUID>,
             """)
     Page<Product> searchByText(@Param("searchQuery") String searchQuery, Pageable pageable);
 
+    @Modifying
+    @Query(value = "DELETE FROM product_additives WHERE product_id = :productId", nativeQuery = true)
+    void deleteAllAdditivesByProductId(@Param("productId") UUID productId);
+
 }

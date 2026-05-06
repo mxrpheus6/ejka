@@ -22,7 +22,6 @@ public class ProductScoringServiceImpl {
     public ProductScore calculateScoreDetails(Product product) {
         ProductCategory category = product.getCategory() != null ? product.getCategory() : ProductCategory.GENERAL;
 
-        // 1. Оценка макронутриентов
         MacroDetail caloriesDetail = rateCalories(product.getCalories(), category);
         MacroDetail proteinsDetail = rateProteins(product.getProteins());
         MacroDetail fatsDetail = rateFats(product.getFats(), category);
@@ -30,13 +29,11 @@ public class ProductScoringServiceImpl {
 
         List<MacroDetail> macros = List.of(caloriesDetail, proteinsDetail, fatsDetail, carbsDetail);
 
-        // 2. Базовый нутриентный балл
         double baseScore = (caloriesDetail.getScore() * 0.40) +
                 (proteinsDetail.getScore() * 0.30) +
                 (fatsDetail.getScore() * 0.15) +
                 (carbsDetail.getScore() * 0.15);
 
-        // 3. Оценка добавок
         int additivesPenalty = 0;
         boolean hasBanned = false;
         boolean hasDangerous = false;
@@ -68,7 +65,6 @@ public class ProductScoringServiceImpl {
             additivesPenalty += Math.min(warningPenalty, 20);
         }
 
-        // 4. Итоговый расчет
         int finalScore = (int) Math.round(baseScore) - additivesPenalty;
 
         if (hasBanned) {
@@ -108,7 +104,6 @@ public class ProductScoringServiceImpl {
 
     private MacroDetail rateProteins(BigDecimal proteins) {
         double val = (proteins != null) ? proteins.doubleValue() : 0.0;
-        // Для белков шкала перевернута: [Отлично >= 8.0, Норма >= 0.1, Плохо < 0.1]
         double[] thresholds = new double[]{8.0, 0.1, 0.0};
         int score;
 
@@ -174,7 +169,6 @@ public class ProductScoringServiceImpl {
         else if (score == 50) impact = ImpactLevel.POOR;
         else impact = ImpactLevel.BAD;
 
-        // Форматируем текст: для калорий целое число, для БЖУ - с одной запятой
         String formattedValue = name.equals("kcal") ?
                 String.format("%d %s", (int) numericValue, unit) :
                 String.format("%.1f %s", numericValue, unit);

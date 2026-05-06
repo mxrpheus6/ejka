@@ -4,7 +4,6 @@ import by.kazachenko.ejka.common.service.impl.MinioServiceImpl;
 import by.kazachenko.ejka.product.model.Product;
 import by.kazachenko.ejka.product.model.ProductImage;
 import by.kazachenko.ejka.product.model.enums.ProductImageType;
-import by.kazachenko.ejka.product.rabbitmq.ImageProcessingEvent;
 import by.kazachenko.ejka.product.rabbitmq.ImagePublisher;
 import by.kazachenko.ejka.product.repository.ProductImageRepository;
 import by.kazachenko.ejka.product.service.ProductImageService;
@@ -42,8 +41,6 @@ public class ProductImageServiceImpl implements ProductImageService {
         Optional<ProductImage> optionalProductImage = productImageRepository
                 .findByProductAndType(product, type);
 
-        ProductImage savedImage;
-
         if (optionalProductImage.isPresent()) {
             ProductImage existingImage = optionalProductImage.get();
             String oldObjectKey = existingImage.getObjectKey();
@@ -51,7 +48,7 @@ public class ProductImageServiceImpl implements ProductImageService {
             existingImage.setObjectKey(newObjectKey);
             existingImage.setContentType(file.getContentType());
 
-            savedImage = productImageRepository.save(existingImage);
+            productImageRepository.save(existingImage);
 
             minioService.deleteFile(productsBucketName, oldObjectKey);
         } else {
@@ -62,16 +59,7 @@ public class ProductImageServiceImpl implements ProductImageService {
                     .contentType(file.getContentType())
                     .build();
 
-            savedImage = productImageRepository.save(newImage);
-        }
-
-        if (type == ProductImageType.INGREDIENTS) {
-            ImageProcessingEvent event = new ImageProcessingEvent(
-                    product.getId().toString(),
-                    savedImage.getObjectKey()
-            );
-
-            imagePublisher.sendImageToQueue(event);
+            productImageRepository.save(newImage);
         }
     }
 
@@ -79,7 +67,7 @@ public class ProductImageServiceImpl implements ProductImageService {
     @Transactional
     public void deleteImage(Product product, ProductImageType type) {
         ProductImage existingImage = productImageRepository.findByProductAndType(product, type)
-                .orElseThrow(() -> new RuntimeException("Фотография не найдена")); //TODO exception
+                .orElseThrow(() -> new RuntimeException("Фотография не найдена"));
 
         String objectKey = existingImage.getObjectKey();
 

@@ -1,5 +1,6 @@
 package by.kazachenko.ejka.product.dto.request;
 
+import by.kazachenko.ejka.additive.model.enums.AllergenCategory;
 import by.kazachenko.ejka.product.model.enums.ProductCategory;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
@@ -10,6 +11,8 @@ import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 
+import java.util.List;
+import java.util.Set;
 import lombok.Builder;
 
 @Builder
@@ -42,6 +45,11 @@ public record ProductRequest(
         @NotNull(message = "{product_request.carbohydrates.not_null}")
         @PositiveOrZero(message = "{product_request.carbohydrates.positive_or_zero}")
         @Digits(integer = 4, fraction = 2, message = "{product_request.digits.invalid}")
-        BigDecimal carbohydrates
+        BigDecimal carbohydrates,
+
+        List<Long> additiveIds,
+        Set<AllergenCategory> allergens,
+        Boolean hasPalmOil,
+        String compositionText
 ) {
 }

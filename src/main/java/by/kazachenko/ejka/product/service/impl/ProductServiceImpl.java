@@ -26,6 +26,7 @@ import by.kazachenko.ejka.user.model.enums.Role;
 import by.kazachenko.ejka.user.repository.UserRepository;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -38,6 +39,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -96,7 +98,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public ProductResponse createProduct(ProductRequest request) {
+    public ProductResponse createProduct(ProductRequest request, MultipartFile mainImg, MultipartFile ingImg, MultipartFile barcodeImg) {
         if (productRepository.existsByBarcode(request.barcode())) {
             throw new ProductAlreadyExistsException(ExceptionMessages.PRODUCT_BARCODE_ALREADY_EXISTS);
         }
@@ -105,17 +107,50 @@ public class ProductServiceImpl implements ProductService {
 
         UUID loggedUserId = securityUtils.getLoggedUserId();
         User creatorRef = userRepository.getReferenceById(loggedUserId);
-
         product.setCreator(creatorRef);
 
+        Role userRole = securityUtils.getLoggedUserRole();
+        if (userRole == Role.ROLE_MODERATOR) {
+            product.setModerationStatus(ModerationStatus.APPROVED);
+        } else {
+            product.setModerationStatus(ModerationStatus.PENDING);
+        }
+
+        product.setCompositionText(request.compositionText());
+        product.setAllergens(request.allergens());
+        product.setHasPalmOil(request.hasPalmOil());
+        product.setCreatedAt(Instant.now());
+
         productRepository.save(product);
+
+        if (request.additiveIds() != null && !request.additiveIds().isEmpty()) {
+            productRepository.batchInsertAdditives(product.getId(), request.additiveIds().toArray(new Long[0]));
+        }
+
+        if (mainImg != null) productImageService.uploadImage(product, ProductImageType.MAIN, mainImg);
+        if (ingImg != null) productImageService.uploadImage(product, ProductImageType.INGREDIENTS, ingImg);
+        if (barcodeImg != null) productImageService.uploadImage(product, ProductImageType.BARCODE, barcodeImg);
+
+        calculateAndSaveScore(product);
 
         return productMapper.toResponse(product);
     }
 
     @Override
     @Transactional
-    public ProductResponse updateProduct(UUID productId, ProductRequest request) {
+    public ProductResponse updateProduct(
+            UUID productId,
+            ProductRequest request,
+            MultipartFile mainImg,
+            MultipartFile ingImg,
+            MultipartFile barcodeImg,
+            ModerationStatus status
+    ) {
+        Role userRole = securityUtils.getLoggedUserRole();
+        if (userRole != Role.ROLE_MODERATOR) {
+            throw new AccessDeniedException("Редактировать продукты может только модератор.");
+        }
+
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(ExceptionMessages.PRODUCT_NOT_FOUND));
 
@@ -125,7 +160,24 @@ public class ProductServiceImpl implements ProductService {
 
         productMapper.updateProductFromDto(request, product);
 
-        productRepository.save(product);
+        product.setCompositionText(request.compositionText());
+        product.setAllergens(request.allergens());
+        product.setHasPalmOil(request.hasPalmOil());
+
+        if (status != null) {
+            product.setModerationStatus(status);
+        }
+
+        productRepository.deleteAllAdditivesByProductId(product.getId());
+        if (request.additiveIds() != null && !request.additiveIds().isEmpty()) {
+            productRepository.batchInsertAdditives(product.getId(), request.additiveIds().toArray(new Long[0]));
+        }
+
+        if (mainImg != null) productImageService.uploadImage(product, ProductImageType.MAIN, mainImg);
+        if (ingImg != null) productImageService.uploadImage(product, ProductImageType.INGREDIENTS, ingImg);
+        if (barcodeImg != null) productImageService.uploadImage(product, ProductImageType.BARCODE, barcodeImg);
+
+        calculateAndSaveScore(product);
 
         return productMapper.toResponse(product);
     }
@@ -225,9 +277,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public ProductScore getProductAnalysis(UUID productId) {
-        // Достаем продукт из базы.
-        // ВАЖНО: Если additives лежат как Lazy, убедись, что они подтянутся,
-        // например через @EntityGraph в репозитории, чтобы не словить N+1
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(ExceptionMessages.PRODUCT_NOT_FOUND));
 
@@ -271,6 +320,16 @@ public class ProductServiceImpl implements ProductService {
             String sortBy,
             String sortDirection)
     {
+        Role userRole = securityUtils.getLoggedUserRole();
+        boolean isPrivileged = (userRole == Role.ROLE_MODERATOR);
+
+        if (!isPrivileged) {
+            if (status != null && status != ModerationStatus.APPROVED) {
+                throw new AccessDeniedException("Доступ к продуктам со статусом " + status + " запрещен.");
+            }
+            status = ModerationStatus.APPROVED;
+        }
+
         Sort.Direction direction = Sort.Direction.fromString(sortDirection);
         Pageable pageable = PageRequest.of(offset, limit, Sort.by(direction, sortBy));
 
@@ -283,6 +342,55 @@ public class ProductServiceImpl implements ProductService {
         }
 
         Specification<Product> spec = Specification.where(ProductSpecifications.hasModerationStatus(status))
+                .and(ProductSpecifications.hasBarcode(actualBarcode))
+                .and(ProductSpecifications.titleSimilarTo(actualSearchQuery, 0.25))
+                .and(ProductSpecifications.hasCategory(category))
+                .and(ProductSpecifications.caloriesBetween(minCalories, maxCalories))
+                .and(ProductSpecifications.minUserRating(minUserRating))
+                .and(ProductSpecifications.containsAdditives(additiveIds));
+
+        Page<ProductAllResponse> responsePage = productRepository
+                .findAll(spec, pageable)
+                .map(productMapper::toAllResponse);
+
+        return pageResponseMapper.toResponse(responsePage);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PageResponse<ProductAllResponse> getMyFilteredProducts(
+            String searchQuery,
+            String barcode,
+            ProductCategory category,
+            ModerationStatus status,
+            Integer minCalories,
+            Integer maxCalories,
+            BigDecimal minUserRating,
+            List<UUID> additiveIds,
+            Integer offset,
+            Integer limit,
+            String sortBy,
+            String sortDirection)
+    {
+        UUID currentUserId = securityUtils.getLoggedUserId();
+
+        if (currentUserId == null) {
+            throw new InsufficientAuthenticationException("Для просмотра своих продуктов необходимо авторизоваться.");
+        }
+
+        Sort.Direction direction = Sort.Direction.fromString(sortDirection);
+        Pageable pageable = PageRequest.of(offset, limit, Sort.by(direction, sortBy));
+
+        String actualBarcode = barcode;
+        String actualSearchQuery = searchQuery;
+
+        if (searchQuery != null && searchQuery.trim().matches("\\d{8,14}")) {
+            actualBarcode = searchQuery.trim();
+            actualSearchQuery = null;
+        }
+
+        Specification<Product> spec = Specification.where(ProductSpecifications.hasCreatorId(currentUserId))
+                .and(ProductSpecifications.hasModerationStatus(status))
                 .and(ProductSpecifications.hasBarcode(actualBarcode))
                 .and(ProductSpecifications.titleSimilarTo(actualSearchQuery, 0.25))
                 .and(ProductSpecifications.hasCategory(category))

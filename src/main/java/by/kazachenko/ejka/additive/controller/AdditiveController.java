@@ -48,8 +48,15 @@ public class AdditiveController {
         return ResponseEntity.ok(additiveResponse);
     }
 
+    @GetMapping("/batch")
+    public ResponseEntity<List<AdditiveResponse>> getAdditivesBatch(@RequestParam List<Long> ids) {
+        List<AdditiveResponse> responses = additiveService.getAdditivesByIds(ids);
+        return ResponseEntity.ok(responses);
+    }
+
     @GetMapping
     public ResponseEntity<PageResponse<AdditiveResponse>> getAllAdditives(
+            @RequestParam(required = false) String searchQuery,
             @RequestParam(required = false) String category,
             @RequestParam(required = false) DangerLevel dangerLevel,
             @RequestParam(required = false) List<String> origin,
@@ -59,6 +66,7 @@ public class AdditiveController {
             @RequestParam(defaultValue = "asc") String sortDirection
     ) {
         PageResponse<AdditiveResponse> additivesResponse = additiveService.getFilteredAdditives(
+                searchQuery,
                 category,
                 dangerLevel,
                 origin,

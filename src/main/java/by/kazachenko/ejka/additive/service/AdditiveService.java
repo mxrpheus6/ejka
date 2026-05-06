@@ -14,11 +14,14 @@ public interface AdditiveService {
 
     AdditiveResponse getAdditiveByCode(String code);
 
+    List<AdditiveResponse> getAdditivesByIds(List<Long> ids);
+
     PageResponse<AdditiveResponse> getAllAdditives(Integer offset, Integer limit, String sortBy, String sortDirection);
 
     List<WorkerAdditiveResponse> getAllWorkerAdditives();
 
     PageResponse<AdditiveResponse> getFilteredAdditives(
+            String searchQuery,
             String category,
             DangerLevel dangerLevel,
             List<String> originTypes,

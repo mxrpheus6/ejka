@@ -5,6 +5,7 @@ import by.kazachenko.ejka.common.exception.cutom.UserNotFoundException;
 import by.kazachenko.ejka.common.security.SecurityUtils;
 import by.kazachenko.ejka.common.utils.RedisKeyUtils;
 import by.kazachenko.ejka.user.model.User;
+import by.kazachenko.ejka.user.model.enums.Role;
 import by.kazachenko.ejka.user.repository.UserRepository;
 
 import java.time.Duration;
@@ -17,10 +18,9 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +43,9 @@ public class ScanPermissionService {
                 (user.getPremiumUntil() == null || !LocalDate.now()
                         .isAfter(user.getPremiumUntil()));
 
-        if (isPremiumActive) {
+        boolean hasPrivilegedRole = user.getRole() == Role.ROLE_MODERATOR;
+
+        if (isPremiumActive || hasPrivilegedRole) {
             return;
         }
 
@@ -53,10 +55,7 @@ public class ScanPermissionService {
         int currentScans = currentScansStr != null ? Integer.parseInt(currentScansStr) : 0;
 
         if (currentScans >= maxFreeScans) {
-            throw new ResponseStatusException(
-                    HttpStatus.FORBIDDEN,
-                    "Лимит бесплатных сканирований исчерпан. Оформите Premium."
-            );
+            throw new AccessDeniedException("Лимит бесплатных сканирований исчерпан. Оформите Premium.");
         }
 
         Long newScansCount = redisTemplate.opsForValue().increment(redisKey);

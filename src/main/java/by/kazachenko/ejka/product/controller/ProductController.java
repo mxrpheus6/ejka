@@ -76,6 +76,40 @@ public class ProductController {
         return ResponseEntity.ok(productsResponse);
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<PageResponse<ProductAllResponse>> getAllMyProducts(
+            @RequestParam(required = false) String searchQuery,
+            @RequestParam(required = false) String barcode,
+            @RequestParam(required = false) ProductCategory category,
+            @RequestParam(required = false) ModerationStatus status,
+            @RequestParam(required = false) Integer minCalories,
+            @RequestParam(required = false) Integer maxCalories,
+            @RequestParam(required = false) BigDecimal minUserRating,
+            @RequestParam(required = false) List<UUID> additiveIds,
+            @RequestParam(defaultValue = "0") @Min(0) Integer offset,
+            @RequestParam(defaultValue = "10") @Min(1) @Max(20) Integer limit,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "desc") String sortDirection
+    ) {
+
+        PageResponse<ProductAllResponse> productsResponse = productService.getMyFilteredProducts(
+                searchQuery,
+                barcode,
+                category,
+                status,
+                minCalories,
+                maxCalories,
+                minUserRating,
+                additiveIds,
+                offset,
+                limit,
+                sortBy,
+                sortDirection
+        );
+
+        return ResponseEntity.ok(productsResponse);
+    }
+
     @GetMapping("/{productId}")
     public ResponseEntity<ProductResponse> getProductById(@PathVariable UUID productId) {
         ProductResponse productResponse = productService.getProductById(productId);
@@ -105,19 +139,27 @@ public class ProductController {
         return ResponseEntity.ok(productResponse);
     }
 
-    @PostMapping
-    public ResponseEntity<ProductResponse> createProduct(@RequestBody @Valid ProductRequest request) {
-        ProductResponse productResponse = productService.createProduct(request);
-
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ProductResponse> createProduct(
+            @RequestPart("data") @Valid ProductRequest request,
+            @RequestPart(value = "mainImage", required = false) MultipartFile mainImage,
+            @RequestPart(value = "ingredientsImage", required = false) MultipartFile ingredientsImage,
+            @RequestPart(value = "barcodeImage", required = false) MultipartFile barcodeImage
+    ) {
+        ProductResponse productResponse = productService.createProduct(request, mainImage, ingredientsImage, barcodeImage);
         return ResponseEntity.ok(productResponse);
     }
 
-    @PutMapping("/{productId}")
+    @PutMapping(value = "/{productId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ProductResponse> updateProduct(
             @PathVariable UUID productId,
-            @RequestBody ProductRequest request
+            @RequestPart("data") @Valid ProductRequest request,
+            @RequestPart(value = "mainImage", required = false) MultipartFile mainImage,
+            @RequestPart(value = "ingredientsImage", required = false) MultipartFile ingredientsImage,
+            @RequestPart(value = "barcodeImage", required = false) MultipartFile barcodeImage,
+            @RequestParam(value = "status", required = false) ModerationStatus status
     ) {
-        ProductResponse productResponse = productService.updateProduct(productId, request);
+        ProductResponse productResponse = productService.updateProduct(productId, request, mainImage, ingredientsImage, barcodeImage, status);
 
         return ResponseEntity.ok(productResponse);
     }

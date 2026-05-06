@@ -93,4 +93,9 @@ public class ProductSpecifications {
             return additivesJoin.get("id").in(additiveIds);
         };
     }
+
+    public static Specification<Product> hasCreatorId(UUID creatorId) {
+        return (root, query, cb) ->
+                creatorId == null ? null : cb.equal(root.get("creator").get("id"), creatorId);
+    }
 }

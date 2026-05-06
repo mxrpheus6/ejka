@@ -23,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -149,6 +150,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionDto> handleAccessDeniedException(AccessDeniedException e) {
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
+                .body(new ExceptionDto(LocalDateTime.now(), e.getMessage(), null));
+    }
+
+    @ExceptionHandler(InsufficientAuthenticationException.class)
+    public ResponseEntity<ExceptionDto> handleAuthenticationException(InsufficientAuthenticationException e) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
                 .body(new ExceptionDto(LocalDateTime.now(), e.getMessage(), null));
     }
 

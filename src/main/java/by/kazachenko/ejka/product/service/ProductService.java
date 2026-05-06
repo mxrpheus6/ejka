@@ -36,13 +36,34 @@ public interface ProductService {
             String sortBy,
             String sortDirection);
 
+    PageResponse<ProductAllResponse> getMyFilteredProducts(
+            String searchQuery,
+            String barcode,
+            ProductCategory category,
+            ModerationStatus status,
+            Integer minCalories,
+            Integer maxCalories,
+            BigDecimal minUserRating,
+            List<UUID> additiveIds,
+            Integer offset,
+            Integer limit,
+            String sortBy,
+            String sortDirection);
+
     ProductResponse getProductById(UUID id);
 
     ProductResponse getProductByBarcode(String barcode);
 
-    ProductResponse createProduct(ProductRequest request);
+    ProductResponse createProduct(ProductRequest request, MultipartFile mainImg, MultipartFile ingImg, MultipartFile barcodeImg);
 
-    ProductResponse updateProduct(UUID productId, ProductRequest request);
+    ProductResponse updateProduct(
+            UUID productId,
+            ProductRequest request,
+            MultipartFile mainImg,
+            MultipartFile ingImg,
+            MultipartFile barcodeImg,
+            ModerationStatus status
+    );
 
     void deleteProductById(UUID id);
 

@@ -3,6 +3,7 @@ package by.kazachenko.ejka.additive.repository;
 import by.kazachenko.ejka.additive.model.Additive;
 
 import by.kazachenko.ejka.additive.specification.AdditiveSpecifications;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -18,5 +19,4 @@ public interface AdditiveRepository extends JpaRepository<Additive, Long>,
     Optional<Additive> findByCode(String code);
     Page<Additive> findAll(Pageable pageable);
     boolean existsByCode(String code);
-
 }
