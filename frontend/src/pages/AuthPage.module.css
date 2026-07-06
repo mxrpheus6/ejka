@@ -1,0 +1,32 @@
+.authContainer {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 32px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #dee2e6;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 24px;
+  font-weight: 700;
+  color: #343a40;
+}
+
+.switchMode {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 0.9rem;
+}
+
+.switchMode span {
+  color: #539155;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.switchMode span:hover {
+  text-decoration: underline;
+}

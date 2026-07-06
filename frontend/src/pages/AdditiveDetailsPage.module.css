@@ -1,0 +1,177 @@
+.detailsCard {
+  border: 1px solid #f1f5f9;
+  border-radius: 24px;
+  padding: 40px;
+  background-color: #ffffff;
+  box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 768px) {
+  .detailsCard {
+    padding: 24px;
+    border-radius: 20px;
+  }
+  .headerRow {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .dangerIndicatorWrapper {
+    width: 100%;
+    min-width: unset; /* Сбрасываем жесткую ширину на телефонах */
+  }
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+}
+
+.code {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+
+.category {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: #f1f5f9;
+  padding: 6px 12px;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.dangerIndicatorWrapper {
+  display: flex;
+  gap: 12px;
+  min-width: 450px; /* Даем больше места на десктопе */
+  flex-wrap: wrap;
+}
+
+.dangerItem {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+  gap: 8px;
+  min-width: min-content; /* Защита от схлопывания текста */
+}
+
+.rect {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  opacity: 0.15;
+  transition: all 0.3s ease;
+}
+
+.rectActive {
+  opacity: 1;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.dangerLabel {
+  font-size: 0.7rem;
+  color: #94a3b8;
+  text-align: center;
+  line-height: 1.3;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  word-break: break-word; /* Красивый перенос длинных слов */
+  hyphens: auto;
+}
+
+.labelActive {
+  color: #0f172a;
+  font-weight: 800;
+}
+
+.bgSAFE { background-color: #10b981; color: #10b981; }
+.bgWARNING { background-color: #f59e0b; color: #f59e0b; }
+.bgDANGEROUS { background-color: #f97316; color: #f97316; }
+.bgBANNED { background-color: #ef4444; color: #ef4444; }
+
+.nameRu {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 4px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.nameEn {
+  font-size: 1.1rem;
+  color: #64748b;
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+.sectionTitle {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-top: 32px;
+  margin-bottom: 12px;
+  color: #0f172a;
+  letter-spacing: -0.01em;
+}
+
+.description {
+  font-size: 1.05rem;
+  color: #334155;
+  line-height: 1.6;
+}
+
+.originsSection {
+  margin-top: 48px;
+  padding: 32px 24px;
+  background-color: #f8fafc;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.originsTitle {
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  color: #0f172a;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.originsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.originBadge {
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.bgOriginPLANT { background-color: #dcfce7; color: #166534; }
+.bgOriginMICROBIOLOGICAL { background-color: #cffafe; color: #155e75; }
+.bgOriginSYNTHETIC { background-color: #f3e8ff; color: #6b21a8; }
+.bgOriginANIMAL { background-color: #ffe4e6; color: #be123c; }
+.bgOriginARTIFICIAL { background-color: #ffedd5; color: #c2410c; }
+.bgOriginMINERAL { background-color: #f1f5f9; color: #334155; }
+.bgOriginDEFAULT { background-color: #f8fafc; color: #64748b; border: 1px solid #e2e8f0; }

@@ -1,0 +1,101 @@
+.filterWrapper {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  margin-bottom: 24px;
+  transition: box-shadow 0.3s ease;
+}
+
+.filterWrapper:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.filterLabel {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.filterSelect {
+  height: 48px !important;
+  border-radius: 12px !important;
+  border: 1px solid #e2e8f0 !important;
+  padding: 0 16px !important;
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  color: #334155 !important;
+  background-color: #f8fafc !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer;
+}
+
+.filterSelect:focus {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+.originPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Чуть уменьшили отступ между ними */
+}
+
+.originPill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+.originPill:hover {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.originPill.active {
+  background-color: #e0f2fe;
+  border-color: #bae6fd;
+  color: #0369a1;
+  box-shadow: 0 4px 12px -4px rgba(3, 105, 161, 0.1);
+}
+
+.originPill.active:hover {
+  box-shadow: 0 6px 16px -4px rgba(3, 105, 161, 0.15);
+}
+
+.filterResetBtn {
+  height: 48px !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  padding: 0 20px !important; 
+  transition: all 0.2s ease !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-color: #e2e8f0 !important;
+  color: #64748b !important;
+}
+
+.filterResetBtn:hover:not(:disabled) {
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+  color: #334155 !important;
+}

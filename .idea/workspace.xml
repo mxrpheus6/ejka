@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6e2d8bbd-1a15-41d6-8d5a-50958939344a" name="Changes" comment="Fixed DB requests in filter">
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/arch.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/off.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/stack.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/yuka.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/dto/response/AdditiveResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/rabbitmq/ActionType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/rabbitmq/AdditivePublisher.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/rabbitmq/AdditiveUpdateEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/config/RedisCacheConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/exception/custom/ProductPendingException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/exception/custom/TooManyPendingProductsException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/dto/response/ProductResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/eslint.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/index.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/public/favicon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/App.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/App.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/api/additivesApi.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/api/authApi.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/api/client.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/api/paymentApi.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/api/productsApi.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/api/reviewsApi.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/api/scansApi.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/BYN_symbol.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/AdditiveCard.module.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/AdditiveCard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/AdditivesFilter.module.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/AdditivesFilter.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/AuthModal.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/BynSymbol.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/CategoryBadge.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/Header.module.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/Header.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/ProductsFilter.module.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/ProductsFilter.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/blocks/AdditivesBlock.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/blocks/AllergensBlock.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/blocks/ControversialBlock.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/blocks/IngredientBlocks.module.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/blocks/MethodologyBlock.module.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/blocks/MethodologyBlock.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/constants/additives.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/hooks/useAuthRole.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/index.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/main.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/AddAdditivePage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/AddProductPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/AdditiveDetailsPage.module.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/AdditiveDetailsPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/AdditivesPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/AuthPage.module.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/AuthPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/EditAdditivePage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/EditProductPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/HomePage.module.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/HomePage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/ModificationProductPage.module.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/ProductReviews.module.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/ProductReviews.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/ProductsDetailsPage.module.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/ProductsDetailsPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/ProductsPage.module.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/ProductsPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/ProfilePage.module.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/ProfilePage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/ReviewsPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/SubscriptionPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/store/additivesSlice.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/store/authSlice.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/store/productsSlice.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/store/scanSlice.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/store/store.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/types/additives.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/types/auth.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/types/payments.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/types/products.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/types/reviews.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/types/scan.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/tsconfig.app.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/tsconfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/tsconfig.node.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/vite.config.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ocr-worker/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ocr-worker/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ocr-worker/demonstration.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ocr-worker/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ocr-worker/migrate.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ocr-worker/nocomments.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ocr-worker/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ocr-worker/traindata/eng.traineddata" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ocr-worker/traindata/rus.traineddata" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env-template" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.env-template" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/docker-compose.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw" beforeDir="false" afterPath="$PROJECT_DIR$/backend/mvnw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/backend/mvnw.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/EjkaApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/EjkaApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/controller/AdditiveController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/controller/AdditiveController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/controller/AllergenTriggerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/controller/AllergenTriggerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/controller/OriginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/controller/OriginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/dto/request/AdditiveRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/dto/request/AdditiveRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/dto/request/OriginRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/dto/request/OriginRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/dto/response/AdditiveResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/dto/response/AllergenTriggerResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/dto/response/AllergenTriggerResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/dto/response/OriginResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/dto/response/OriginResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/dto/response/WorkerAdditiveResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/dto/response/WorkerAdditiveResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/mapper/AdditiveMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/mapper/AdditiveMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/mapper/AllergenTriggerMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/mapper/AllergenTriggerMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/mapper/OriginMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/mapper/OriginMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/model/Additive.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/model/Additive.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/model/AllergenTrigger.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/model/AllergenTrigger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/model/Origin.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/model/Origin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/model/enums/AllergenCategory.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/model/enums/AllergenCategory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/model/enums/DangerLevel.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/model/enums/DangerLevel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/repository/AdditiveRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/repository/AdditiveRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/repository/AllergenTriggerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/repository/AllergenTriggerRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/repository/OriginRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/repository/OriginRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/service/AdditiveService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/service/AdditiveService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/service/AllergenTriggerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/service/AllergenTriggerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/service/OriginService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/service/OriginService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/service/impl/AdditiveServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/service/impl/AdditiveServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/service/impl/AllergenTriggerServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/service/impl/AllergenTriggerServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/service/impl/OriginServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/service/impl/OriginServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/additive/specification/AdditiveSpecifications.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/additive/specification/AdditiveSpecifications.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/config/MinioClientConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/config/MinioClientConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/config/ObjectMapperConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/config/ObjectMapperConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/config/OpenApiConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/config/OpenApiConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/config/PasswordEncoderConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/config/PasswordEncoderConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/config/RabbitConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/config/RabbitConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/config/SqlFunctionsContributor.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/config/SqlFunctionsContributor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/dto/exception/ExceptionDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/dto/exception/ExceptionDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/dto/exception/Validation.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/dto/exception/Validation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/dto/response/PageResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/dto/response/PageResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/exception/ExceptionMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/exception/ExceptionMessages.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/exception/cutom/AdditiveAlreadyExistsException.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/exception/custom/AdditiveAlreadyExistsException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/exception/cutom/AdditiveNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/exception/custom/AdditiveNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/exception/cutom/OriginAlreadyExistsException.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/exception/custom/OriginAlreadyExistsException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/exception/cutom/OriginNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/exception/custom/OriginNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/exception/cutom/ProductAlreadyExistsException.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/exception/custom/ProductAlreadyExistsException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/exception/cutom/ProductNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/exception/custom/ProductNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/exception/cutom/ReviewAlreadyExistsException.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/exception/custom/ReviewAlreadyExistsException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/exception/cutom/ReviewNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/exception/custom/ReviewNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/exception/cutom/UserAlreadyExistsException.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/exception/custom/UserAlreadyExistsException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/exception/cutom/UserNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/exception/custom/UserNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/mapper/PageResponseMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/mapper/PageResponseMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/security/CustomUserDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/security/CustomUserDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/security/CustomUserDetailsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/security/CustomUserDetailsServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/security/JwtAuthFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/security/JwtAuthFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/security/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/security/SecurityUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/security/SecurityUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/service/MinioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/service/MinioService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/service/impl/MinioServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/service/impl/MinioServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/common/utils/RedisKeyUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/common/utils/RedisKeyUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/cache/ScanResultCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/cache/ScanResultCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/controller/ProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/controller/QuickScanController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/controller/QuickScanController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/dto/request/ProductRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/dto/request/ProductRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/dto/response/ProductAllResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/dto/response/ProductAllResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/dto/response/ProductImageResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/dto/response/ProductImageResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/dto/response/ProductResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/dto/response/ProductScoreResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/dto/response/ProductScoreResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/mapper/ProductMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/mapper/ProductMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/model/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/model/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/model/ProductImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/model/ProductImage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/model/ProductScore.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/model/ProductScore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/model/enums/ModerationStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/model/enums/ModerationStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/model/enums/ProductCategory.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/model/enums/ProductCategory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/model/enums/ProductImageType.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/model/enums/ProductImageType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/rabbitmq/ImageProcessingEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/rabbitmq/ImageProcessingEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/rabbitmq/ImageProcessingListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/rabbitmq/ImageProcessingListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/rabbitmq/ImageProcessingResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/rabbitmq/ImageProcessingResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/rabbitmq/ImagePublisher.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/rabbitmq/ImagePublisher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/rabbitmq/ParsedAdditive.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/rabbitmq/ParsedAdditive.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/rabbitmq/ParsedAllergen.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/rabbitmq/ParsedAllergen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/rabbitmq/ParsedControversial.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/rabbitmq/ParsedControversial.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/repository/ProductImageRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/repository/ProductImageRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/repository/ProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/repository/ProductRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/service/ProductImageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/service/ProductImageService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/service/ProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/service/impl/ProductImageServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/service/impl/ProductImageServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/service/impl/ProductScoringServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/service/impl/ProductScoringServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/service/impl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/service/impl/ProductServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/service/impl/QuickScanServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/service/impl/QuickScanServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/service/impl/ScanPermissionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/service/impl/ScanPermissionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/product/specification/ProductSpecifications.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/product/specification/ProductSpecifications.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/review/controller/ReviewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/review/controller/ReviewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/review/dto/request/ReviewRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/review/dto/request/ReviewRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/review/dto/request/ReviewVoteRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/review/dto/request/ReviewVoteRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/review/dto/response/ReviewResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/review/dto/response/ReviewResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/review/dto/response/UserReviewVoteResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/review/dto/response/UserReviewVoteResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/review/mapper/ReviewMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/review/mapper/ReviewMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/review/model/Review.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/review/model/Review.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/review/model/ReviewVote.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/review/model/ReviewVote.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/review/repository/ReviewRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/review/repository/ReviewRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/review/repository/ReviewVoteRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/review/repository/ReviewVoteRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/review/service/ReviewService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/review/service/ReviewService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/review/service/impl/ReviewServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/review/service/impl/ReviewServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/subscription/controller/SubscriptionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/subscription/controller/SubscriptionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/subscription/dto/response/PlanResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/subscription/dto/response/PlanResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/subscription/service/StripeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/subscription/service/StripeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/user/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/user/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/user/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/user/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/user/dto/request/LoginRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/user/dto/request/LoginRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/user/dto/request/RefreshTokenRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/user/dto/request/RefreshTokenRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/user/dto/request/RegisterRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/user/dto/request/RegisterRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/user/dto/request/UserRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/user/dto/request/UserRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/user/dto/response/AuthResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/user/dto/response/AuthResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/user/dto/response/UserResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/user/dto/response/UserResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/user/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/user/mapper/UserMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/user/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/user/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/user/model/enums/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/user/model/enums/Role.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/user/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/user/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/user/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/user/service/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/user/service/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/user/service/JwtService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/user/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/user/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/user/service/impl/AuthServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/user/service/impl/AuthServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/user/service/impl/JwtServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/user/service/impl/JwtServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/by/kazachenko/ejka/user/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/by/kazachenko/ejka/user/service/impl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/services/org.hibernate.boot.model.FunctionContributor" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/META-INF/services/org.hibernate.boot.model.FunctionContributor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/messages.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/messages.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/by/kazachenko/ejka/EjkaApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/by/kazachenko/ejka/EjkaApplicationTests.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="175" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Dockerfile" />
+        <option value="Interface" />
+        <option value="Record" />
+        <option value="Enum" />
+        <option value="Exception" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;mxrpheus6&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/mxrpheus6/ejka.git&quot;,
+    &quot;accountId&quot;: &quot;4c676bf6-fafd-4f99-9686-3de24de21b9c&quot;
+  }
+}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/resources/messages.properties" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="JpbToolWindowState">
+    <option name="isToolWindowVisible" value="false" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="399tyST8mn2sGVzB2KTURSYgNa5" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Ejka.executor": "Run",
+    "Application.EjkaApplication.executor": "Run",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/ejka/ocr-worker",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "SQL Dialects",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
+    ]
+  }
+}]]></component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\ejka\ocr-worker" />
+      <recent name="D:\ejka\frontend" />
+      <recent name="D:\ejka\assets" />
+      <recent name="D:\ejka" />
+      <recent name="D:\ejka\src\main\java\by\kazachenko\ejka\user\dto\request" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\ejka\backend" />
+      <recent name="D:\ejka" />
+      <recent name="D:\ejka\module-app" />
+      <recent name="D:\ejka\module-user" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="by.kazachenko.ejka.common.service" />
+      <recent name="by.kazachenko.ejka.product.service" />
+      <recent name="by.kazachenko.ejka.common.security" />
+      <recent name="by.kazachenko.ejka.user.service" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="by.kazachenko.ejka.user.service" />
+      <recent name="by.kazachenko.ejka.service" />
+      <recent name="by.kazachenko.ejka" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.Ejka">
+    <configuration name="Ejka" type="Application" factoryName="Application">
+      <option name="ALTERNATIVE_JRE_PATH" value="C:/Program Files/Java/jdk-21" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="envFilePaths">
+        <option value="$PROJECT_DIR$/backend/.env-dev" />
+      </option>
+      <option name="MAIN_CLASS_NAME" value="by.kazachenko.ejka.EjkaApplication" />
+      <module name="ejka" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EjkaApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="ejka" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="by.kazachenko.ejka.EjkaApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Ejka" />
+      <item itemvalue="Spring Boot.EjkaApplication" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6e2d8bbd-1a15-41d6-8d5a-50958939344a" name="Changes" comment="" />
+      <created>1770120368185</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1770120368185</updated>
+      <workItem from="1773299069782" duration="206000" />
+      <workItem from="1773300109912" duration="168000" />
+      <workItem from="1773300667050" duration="126000" />
+      <workItem from="1776284485174" duration="7605000" />
+      <workItem from="1776335510654" duration="11000" />
+      <workItem from="1776376006056" duration="4120000" />
+      <workItem from="1776612602366" duration="8637000" />
+      <workItem from="1776676516921" duration="2517000" />
+      <workItem from="1776762984962" duration="50000" />
+      <workItem from="1776784011727" duration="5170000" />
+      <workItem from="1776843844596" duration="21000" />
+      <workItem from="1776904005802" duration="717000" />
+      <workItem from="1776945117726" duration="1908000" />
+      <workItem from="1776985166127" duration="8000" />
+      <workItem from="1777282404177" duration="59750000" />
+      <workItem from="1777548842457" duration="7295000" />
+      <workItem from="1777669119027" duration="1199000" />
+      <workItem from="1777748461033" duration="2870000" />
+      <workItem from="1777803798770" duration="8233000" />
+      <workItem from="1777890701326" duration="3085000" />
+      <workItem from="1777936495861" duration="2067000" />
+      <workItem from="1778003260413" duration="5754000" />
+      <workItem from="1778107944626" duration="945000" />
+      <workItem from="1778140118597" duration="1202000" />
+      <workItem from="1778165415362" duration="11940000" />
+      <workItem from="1778354919977" duration="10960000" />
+      <workItem from="1778517058374" duration="4052000" />
+      <workItem from="1778546120871" duration="736000" />
+      <workItem from="1778579854946" duration="9180000" />
+      <workItem from="1778590141812" duration="4626000" />
+      <workItem from="1778614191033" duration="6063000" />
+      <workItem from="1778691097015" duration="1786000" />
+      <workItem from="1778766487545" duration="7000" />
+    </task>
+    <task id="LOCAL-00001" summary="Fixed DB requests in filter">
+      <option name="closed" value="true" />
+      <created>1770128201885</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1770128201885</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-core" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.security:spring-security-core" />
+    <option featureType="dependencySupport" implementationName="java:jakarta.validation:jakarta.validation-api" />
+    <option featureType="dependencySupport" implementationName="java:io.projectreactor:reactor-core" />
+    <option featureType="dependencySupport" implementationName="executable:kubectl" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.data:spring-data-commons" />
+    <option featureType="dependencySupport" implementationName="java:org.hibernate.validator:hibernate-validator" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-webmvc" />
+    <option featureType="dependencySupport" implementationName="java:org.projectlombok:lombok" />
+    <option featureType="dependencySupport" implementationName="executable:docker" />
+    <option featureType="dependencySupport" implementationName="java:jakarta.persistence:jakarta.persistence-api" />
+    <option featureType="com.intellij.fileTypeFactory" implementationName="application.yaml" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.boot:spring-boot" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Fixed DB requests in filter" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed DB requests in filter" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/module-user/src/main/java/by/kazachenko/user/security/JwtAuthFilter.java</url>
+          <line>32</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="org.springframework.security.core.userdetails.User" memberName="accountNonExpired" />
+        <PinnedItemInfo parentTag="javax.net.ssl.SSLException" memberName="suppressedExceptions" />
+      </pinned-members>
+    </pin-to-top-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

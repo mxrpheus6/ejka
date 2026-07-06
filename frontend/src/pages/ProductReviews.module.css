@@ -1,0 +1,108 @@
+.reviewFormContainer {
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 32px;
+  border: 1px solid #dee2e6;
+}
+
+.starSelection {
+  font-size: 2rem;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.starSelect {
+  color: #dee2e6;
+  transition: color 0.2s ease;
+}
+
+.starSelectActive {
+  color: #ffc107;
+}
+
+.reviewsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.reviewCard {
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.reviewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.reviewAuthorBox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.reviewAuthor {
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #212529;
+}
+
+.myReviewBadge {
+  background-color: #198754;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.reviewStars {
+  font-size: 1.2rem;
+}
+
+.starActive {
+  color: #ffc107;
+}
+
+.starInactive {
+  color: #dee2e6;
+}
+
+.reviewContent {
+  font-size: 1rem;
+  color: #212529;
+  margin-bottom: 16px;
+  white-space: pre-wrap;
+}
+
+.reviewActions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #f1f3f5;
+  padding-top: 12px;
+}
+
+.usefulScoreText {
+  font-size: 0.9rem;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.actionButtonsRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.voteButtons {
+  display: flex;
+  gap: 8px;
+}

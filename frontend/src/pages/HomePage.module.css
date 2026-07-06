@@ -1,0 +1,81 @@
+.heroSection {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.uploadBox {
+  border: 2px dashed #539155;
+  border-radius: 16px;
+  padding: 48px 24px;
+  background-color: #f8fff9;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 250px;
+}
+
+.uploadBox:hover {
+  background-color: #eefbee;
+  border-color: #3d703f;
+  transform: translateY(-4px);
+}
+
+.dragActive {
+  background-color: #d4f5d6;
+  border-color: #28a745;
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(40, 167, 69, 0.2);
+}
+
+.uploadIcon {
+  font-size: 48px;
+  color: #539155;
+  margin-bottom: 16px;
+}
+
+.fileInput {
+  display: none;
+}
+
+.previewImage {
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 12px;
+  border: 1px solid #dee2e6;
+  background-color: #fff;
+  padding: 8px;
+}
+
+.parsedTextContainer {
+  background-color: #212529;
+  color: #20c997;
+  padding: 16px;
+  border-radius: 12px;
+  height: 100%;
+  max-height: 400px;
+  overflow-y: auto;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.parsedTextContainer pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.sectionTitle {
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #343a40;
+}
+
+.customModalWidth {
+  max-width: 1000px;
+}

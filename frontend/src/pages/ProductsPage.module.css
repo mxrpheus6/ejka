@@ -1,0 +1,121 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.imageWrapper {
+  position: relative;
+  height: 180px;
+  width: 100%;
+  background-color: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.image {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.noImage {
+  color: #adb5bd;
+  font-size: 0.9rem;
+}
+
+.contentSection {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.category {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin-bottom: 12px;
+}
+
+.macros {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #495057;
+  background-color: #e9ecef;
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.bottomSection {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ratingBadge {
+  font-size: 0.9rem;
+  padding: 6px 8px;
+}
+
+.reviewsText {
+  font-size: 0.85rem;
+  color: #adb5bd;
+}
+
+.scoreBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  z-index: 2;
+  border: 2px solid white; /* Добавляет красивую белую рамку вокруг кружка */
+}
+
+.scoreValue {
+  font-size: 1.1rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.scoreMax {
+  font-size: 0.65rem;
+  font-weight: 600;
+  line-height: 1;
+  opacity: 0.9;
+}

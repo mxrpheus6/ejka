@@ -1,0 +1,101 @@
+.additiveCard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.03);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.additiveCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.12);
+  border-color: #cbd5e1;
+}
+
+.additiveTopSection {
+  margin-bottom: 20px;
+}
+
+.additiveCode {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+  color: #0f172a;
+  letter-spacing: -0.01em;
+}
+
+.additiveName {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #334155;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+}
+
+.additiveCategory {
+  font-size: 0.85rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.additiveBottomSection {
+  margin-top: auto;
+}
+
+.originsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.originBadge {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.bgOriginPLANT { background-color: #dcfce7; color: #166534; }
+.bgOriginMICROBIOLOGICAL { background-color: #cffafe; color: #155e75; }
+.bgOriginSYNTHETIC { background-color: #f3e8ff; color: #6b21a8; }
+.bgOriginANIMAL { background-color: #ffe4e6; color: #be123c; }
+.bgOriginARTIFICIAL { background-color: #ffedd5; color: #c2410c; }
+.bgOriginMINERAL { background-color: #f1f5f9; color: #334155; }
+.bgOriginDEFAULT { background-color: #f8fafc; color: #64748b; border: 1px solid #e2e8f0; }
+
+.dangerIndicator {
+  display: flex;
+  gap: 6px;
+  height: 6px;
+  width: 100%;
+}
+
+.rect {
+  flex: 1;
+  border-radius: 3px;
+  opacity: 0.15;
+  transition: opacity 0.3s ease;
+}
+
+.rectActive {
+  opacity: 1;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.bgSAFE { background-color: #10b981; color: #10b981; }
+.bgWARNING { background-color: #f59e0b; color: #f59e0b; }
+.bgDANGEROUS { background-color: #f97316; color: #f97316; }
+.bgBANNED { background-color: #ef4444; color: #ef4444; }
