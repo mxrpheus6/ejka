@@ -1,6 +1,5 @@
-<video width="100%" autoplay loop muted playsinline controls>
-  <source src="assets/demo.mp4" type="video/mp4">
-</video>
+[![IMAGE ALT TEXT](https://img.youtube.com/vi/sta72SI3iM/0.jpg)](https://www.youtube.com/watch?v=tsta72SI3iM "demo")
+
 
 **Ежка** - это полноценное full-stack приложение, которое помогает узнать, что на самом деле скрывается в составе продуктов. Ты просто загружаешь фотку этикетки, а система сама распознает текст, находит Е-добавки, анализирует БЖУ и рассчитывает честный рейтинг безопасности. В основе логики лежат официальные регламенты ЕАЭС, СанПиН и международные стандарты.
 
